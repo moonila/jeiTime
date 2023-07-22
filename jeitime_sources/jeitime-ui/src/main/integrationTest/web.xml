@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<display-name>JEI Time</display-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>WEB-INF/wsDatabaseManager.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	<welcome-file-list>
+		<welcome-file>jeitime/pg/pages/Accueil</welcome-file>
+	</welcome-file-list>
+	<filter>
+		<filter-name>Authent</filter-name>
+		<filter-class>org.jeinnov.jeitime.utils.AuthentFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>Authent</filter-name>
+		<servlet-name>JEITimeServlet</servlet-name>
+	</filter-mapping>
+	<servlet>
+		<description>The JEI Time servlet</description>
+		<servlet-name>JEITimeServlet</servlet-name>
+		<servlet-class>org.jeinnov.jeitime.ui.JEITimeServlet</servlet-class>
+		<init-param>
+			<param-name>xml</param-name>
+			<param-value>/WEB-INF/jeitime.xml</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>JEITimeServlet</servlet-name>
+		<url-pattern>/jeitime/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<display-name>CXF Servlet</display-name>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/ws/*</url-pattern>
+	</servlet-mapping>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>all</web-resource-name>
+			<url-pattern>/jeitime/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>administrateur</role-name>
+			<role-name>gestionnaire</role-name>
+			<role-name>collaborateur</role-name>
+			<role-name>chef_de_projet</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>JEITime</realm-name>
+		<form-login-config>
+			<form-login-page>/login.jsp</form-login-page>
+			<form-error-page>/error_login.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+	<security-role>
+		<description></description>
+		<role-name>administrateur</role-name>
+	</security-role>
+
+	<security-role>
+		<description></description>
+		<role-name>gestionnaire</role-name>
+	</security-role>
+
+	<security-role>
+		<description></description>
+		<role-name>collaborateur</role-name>
+	</security-role>
+
+	<security-role>
+		<description></description>
+		<role-name>chef_de_projet</role-name>
+	</security-role>
+
+
+</web-app>

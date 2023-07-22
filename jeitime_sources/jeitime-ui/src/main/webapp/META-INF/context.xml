@@ -1,0 +1,7 @@
+<Context>	
+		<Realm appName="JaasConf"
+		className="org.apache.catalina.realm.JAASRealm" debug="99"
+		roleClassNames="org.jeinnov.jeitime.persistence.bo.collaborateur.RolesCollab"
+	  userClassNames="org.jeinnov.jeitime.persistence.bo.collaborateur.CollaborateurP"/>
+</Context>
+

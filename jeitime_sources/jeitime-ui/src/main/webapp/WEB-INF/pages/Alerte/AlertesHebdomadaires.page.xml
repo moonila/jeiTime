@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jeitime-export="org.jeinnov.jeitime.utils"
+	xsi:schemaLocation="org.ow2.opensuit.xml.base ../../base.xsd ../utils ../../JEITime.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") ||
+				request.isUserInRole("chef_de_projet") ||
+				request.isUserInRole("gestionnaire")}</Authorization>
+
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("consult_alerte_hebdo.title")}</Title>
+
+	<base:html.layout.Div>
+		<base:html.form.EditForm ID="mainAnnee">
+			<Items>
+				<base:html.form.field.DateField>
+					<Label>${message("semaine_du.label")}</Label>
+					<Bind>${alerteBean.dateDeb}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+				</base:html.form.field.DateField>
+			</Items>
+			<SubmitButtonLabel>
+				${message("afficher.bouton")}
+  		</SubmitButtonLabel>
+			<OnValidate>${alerteBean.validate()}</OnValidate>
+			<OnSubmit>
+				<base:action.DoAndForward>
+					<Do>${alerteBean.afficheSem ()} </Do>
+					<Forwards>
+						<base:action.Case Name="default">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnSubmit>
+		</base:html.form.EditForm>
+	</base:html.layout.Div>
+
+	<base:html.layout.Div>
+		<Visible>${alerteBean.visible}</Visible>
+		<base:html.table.Table ID="tablAnnee">
+			<Title>${message("recap_alertes_hebdo.title")}</Title>
+			<RowsData>${alerteBean.allAlertes} </RowsData>
+			<Toolbar>
+				<base:html.menu.Button>
+					<Title> ${message("export.title")}</Title>
+					<OnClick>
+						<base:html.table.export.ExportTableData>
+							<Format>
+								<!--<base:html.table.export.CSV	Separator=";" />-->
+								<jeitime-export:CSVExport Separator=";" />
+							</Format>
+						</base:html.table.export.ExportTableData>
+					</OnClick>
+				</base:html.menu.Button>
+			</Toolbar>
+			<Columns>
+				<base:html.table.TextColumn>
+					<Title>${message("nom_collabo.title")}</Title>
+					<Text>${$row.collab.nomColl}</Text>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn>
+					<Title>${message("semaines.title")} </Title>
+					<Text>${$row.indicDate}</Text>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn>
+					<Title> ${message("nb_erreur_def.title")} </Title>
+					<Text> ${$row.nbheureCollege}</Text>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn>
+					<Title> ${message("nb_erreur_saisie.title")}</Title>
+					<Text>${$row.nbheureSaisie}</Text>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn>
+					<Title> ${message("difference.title")} </Title>
+					<Text>+ ${$row.difference}</Text>
+				</base:html.table.TextColumn>
+			</Columns>
+		</base:html.table.Table>
+	</base:html.layout.Div>
+</base:page.Composite>

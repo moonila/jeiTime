@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet") }</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${listProjetBean.listerProjetFerme()}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+
+	<Title>${message("list_projet_fermes.title")} </Title>
+	<base:html.table.Table ID="tableCollab"
+		SortAndPaginateLocaly="true">
+		<ResultsPerPage>${20}</ResultsPerPage>
+		<RowsData> ${listProjetBean.listProjetFerme} </RowsData>
+		<Selection>
+			<base:html.table.SelectionBindings>
+				<RowID>${$row.idProjet}</RowID>
+				<SelectedIDs>${listProjetBean.selected}</SelectedIDs>
+			</base:html.table.SelectionBindings>
+		</Selection>
+		<Toolbar>
+			<base:html.menu.Button>
+				<Title>${message("reouvrir_projet_ferme.title")} </Title>
+				<OnClick>
+					<base:action.DoAndForward>
+						<Do>${listProjetBean.deselect()}}</Do>
+						<Forwards>
+							<base:action.Case Name="success">
+
+								<base:action.ReloadThisPage></base:action.ReloadThisPage>
+
+							</base:action.Case>
+						</Forwards>
+
+					</base:action.DoAndForward>
+				</OnClick>
+			</base:html.menu.Button>
+		</Toolbar>
+		<Columns>
+			<base:html.table.TextColumn>
+				<Title> ${message("nom_projet.title")} </Title>
+				<Sort>
+					<base:html.table.NativeSorter />
+				</Sort>
+				<CellValue>${$row.nomProjet}</CellValue>
+				<Text>${$row.nomProjet}  </Text>
+				<OnClick>
+					<base:action.ShowPage Page="/pages/Projet/ModifProjet">
+						<Parameters>
+							<base:param.DynParam Name="id">
+								<Value>${$row.idProjet}</Value>
+							</base:param.DynParam>
+						</Parameters>
+					</base:action.ShowPage>
+				</OnClick>
+			</base:html.table.TextColumn>
+
+			<base:html.table.DateColumn>
+				<Title>${message("date_debut.title")}</Title>
+				<Date>${$row.dateDeb} </Date>
+			</base:html.table.DateColumn>
+
+			<base:html.table.DateColumn>
+				<Title>${message("date_fin_prevu.title")} </Title>
+				<Date>${$row.dateFin}</Date>
+			</base:html.table.DateColumn>
+
+			<base:html.table.DateColumn>
+				<Title> ${message("date_fermeture.title")} </Title>
+				<Date>${$row.dateFermeture} </Date>
+			</base:html.table.DateColumn>
+
+			<base:html.table.DateColumn>
+				<Title> ${message("date_cloture.title")}</Title>
+				<Date>${$row.dateCloture}</Date>
+			</base:html.table.DateColumn>
+
+		</Columns>
+	</base:html.table.Table>
+</base:page.Composite>

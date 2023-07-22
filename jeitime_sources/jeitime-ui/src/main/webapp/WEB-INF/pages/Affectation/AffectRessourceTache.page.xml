@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition Extends="/pages/Affectation/AffectRessource">
+			<Authorization>${request.isUserInRole("administrateur") ||
+				request.isUserInRole("chef_de_projet") ||
+				request.isUserInRole("gestionnaire")}</Authorization>
+<!--			<LocalBeans>-->
+<!--				<base:binding.JavaBeans>-->
+<!--					<base:binding.Bean Class="ui.affecter.AffecterUIBean"-->
+<!--						LifeScope="PageContext" Name="affecterBean" />-->
+<!--				</base:binding.JavaBeans>-->
+<!--			</LocalBeans>-->
+			<OnLoad>
+				<base:binding.Do>
+					${affecterBean.loadAllTache(request)}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+
+	<Title>${message("affecter_ressource_choisir_tache.title")}</Title>
+	
+<base:html.layout.Div>	
+	<Visible>${affecterBean.voirTache} </Visible>
+	<base:html.HTML>
+		<Code><![CDATA[
+			<br/><div class=legend>Veuillez choisir une Tâche</div>
+			]]></Code>
+	</base:html.HTML>
+
+	<base:html.table.Table ID="tableTache">
+		<RowsData> ${affecterBean.alltache} </RowsData>
+		<Selection>
+			<base:html.table.SelectionBindings>
+				<RowID>${$row.idTache}</RowID>
+				<SelectedIDs>${affecterBean.selectedTache}</SelectedIDs>
+			</base:html.table.SelectionBindings>
+		</Selection>
+		<Toolbar>
+			<base:html.menu.Button>
+				<Title>${message("retour_page_prec.title")}</Title>
+				<OnClick>
+					<base:action.RestoreViewPoint
+						ParamName="fromUrl" />
+				</OnClick>
+				<Visible>${request.isUserInRole("administrateur")}</Visible>
+			</base:html.menu.Button>
+			<base:html.menu.Button>
+				<Title>${message("tout_selectionner.title")}</Title>
+				<OnClick>
+					<base:action.DoAndForward>
+						<Do>${affecterBean.selectAllTache()} </Do>
+						<Forwards>
+							<base:action.Case Name="success">
+								<base:action.ReloadThisPage></base:action.ReloadThisPage>
+							</base:action.Case>
+						</Forwards>
+					</base:action.DoAndForward>
+				</OnClick>
+			</base:html.menu.Button>
+			<base:html.menu.Button>
+				<Title>${message("tout_deselectionner.title")}</Title>
+				<OnClick>
+					<base:action.DoAndForward>
+						<Do>${affecterBean.deSelectAllTache ()} </Do>
+						<Forwards>
+							<base:action.Case Name="success">
+								<base:action.ReloadThisPage></base:action.ReloadThisPage>
+							</base:action.Case>
+						</Forwards>
+					</base:action.DoAndForward>
+				</OnClick>
+			</base:html.menu.Button>
+			<base:html.menu.Button>
+				<Title>${message("valider.title")}</Title>
+				<OnClick>
+<!--					<base:action.ShowPage Page="/pages/Affectation/AffectRessourceCollab">-->
+<!--					<Parameters>-->
+<!--						<base:param.ViewPointParam Name="fromAffectTache" />-->
+<!--					</Parameters>-->
+<!--					</base:action.ShowPage>	-->
+					<base:action.DoAndForward>
+						<Do>${affecterBean.loadAllEquipe()}</Do>
+						<Forwards>
+							<base:action.Case Name="success">
+								<base:action.ReloadThisPage/>
+							</base:action.Case>
+						</Forwards>
+					</base:action.DoAndForward>
+				</OnClick>
+				<Visible>${request.isUserInRole("administrateur")}</Visible>
+			</base:html.menu.Button>
+		</Toolbar>
+		<Columns>
+			<base:html.table.TextColumn>
+				<Title>${message("groupe_tache.title")}</Title>
+				<Text> ${$row.nomtache.typeTache.nomTypTach}</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("tache.title")} </Title>
+				<Text> ${$row.nomtache.nomTache}</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("prevision_budjet.title")} </Title>
+				<Text>${$row.budgetprevu}</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("prevision_temps.title")} </Title>
+				<Text> ${$row.tpsprevu}</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title> ${message("prio.title")}</Title>
+				<Text>${message(stringFormat("tache.priorite.%s", $row.priorite))}
+				</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("rd.title")}</Title>
+				<Text>${message(stringFormat("tache.eligible.%s", $row.eligible))}
+				</Text>
+			</base:html.table.TextColumn>
+		</Columns>
+	</base:html.table.Table>
+</base:html.layout.Div>	
+	<base:html.layout.Div>
+				<base:Import_html.IView File="/AffectationRessources.xml" />
+			</base:html.layout.Div>
+			<base:html.layout.Div>
+				<base:Import_html.IView File="/AffectationRecap.xml" />
+			</base:html.layout.Div>
+</base:page.Composite>

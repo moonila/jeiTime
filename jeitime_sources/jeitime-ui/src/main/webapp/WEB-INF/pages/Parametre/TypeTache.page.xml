@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") }
+			</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${typeTacheBean.load()}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("gestion_groupes_taches.title")}</Title>
+	<base:html.layout.Div>
+		<Visible>${typeTacheBean.selected == null}</Visible>
+		<base:html.form.EditForm ID="create">
+			<Items>
+				<base:html.form.Section>
+					<Title>${message("new_groupe_tache.title")} </Title>
+
+					<base:html.form.field.TextField
+						Cols="30">
+						<Label>${message("nom_new_groupe_tache_ob.label")} </Label>
+						<Bind>${typeTacheBean.nomTypTach}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+				</base:html.form.Section>
+			</Items>
+			<SubmitButtonLabel>
+				${message("creer.bouton")}
+			</SubmitButtonLabel>
+			<OnSubmit>
+				<base:action.DoAndForward>
+					<Do>${typeTacheBean.create()} </Do>
+					<Forwards>
+						<base:action.Case Name="success">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnSubmit>
+		</base:html.form.EditForm>
+	</base:html.layout.Div>
+
+	<!--	<base:html.layout.Div>-->
+	<!--		<Visible>${typeTacheBean.selected != null}</Visible>-->
+	<!--		<base:html.form.EditForm ID="update">-->
+	<!--			<Items>-->
+	<!--				<base:html.form.Section>-->
+	<!--					<Title>${message("modif_groupe_tache.title")} </Title>-->
+	<!--					<base:html.form.field.TextField-->
+	<!--						Cols="30">-->
+	<!--						<Label>${message("nom_groupe_tache.label")}</Label>-->
+	<!--						<Bind>${typeTacheBean.selected.nomTypTach}</Bind>-->
+	<!--						<Validators>-->
+	<!--							<base:validation.Mandatory />-->
+	<!--						</Validators>-->
+	<!--					</base:html.form.field.TextField>-->
+	<!--				</base:html.form.Section>-->
+	<!--			</Items>-->
+	<!--			<SubmitButtonLabel>-->
+	<!--				${message("modifier.bouton")}-->
+	<!--			</SubmitButtonLabel>-->
+	<!--			<OnSubmit>-->
+	<!--				<base:action.DoAndForward>-->
+	<!--					<Do>${typeTacheBean.update()}</Do>-->
+	<!--					<Forwards>-->
+	<!--						<base:action.Case Name="success">-->
+	<!--							<base:action.ReloadThisPage></base:action.ReloadThisPage>-->
+	<!--						</base:action.Case>-->
+	<!--					</Forwards>-->
+	<!--				</base:action.DoAndForward>-->
+	<!--			</OnSubmit>-->
+	<!--			<OnCancel>-->
+	<!--				<base:action.DoAndForward>-->
+	<!--					<Do>${typeTacheBean.cancel()}</Do>-->
+	<!--					<Forwards>-->
+	<!--						<base:action.Case Name="success">-->
+	<!--							<base:action.ReloadThisPage></base:action.ReloadThisPage>-->
+	<!--						</base:action.Case>-->
+	<!--					</Forwards>-->
+	<!--				</base:action.DoAndForward>-->
+	<!--			</OnCancel>-->
+	<!--		</base:html.form.EditForm>-->
+	<!--	</base:html.layout.Div>-->
+	<base:html.form.ViewForm ID="liste">
+		<Items>
+			<base:html.form.Section>
+				<Title>${message("liste_groupe_tache.title")}</Title>
+				<base:html.form.field.TableField
+					Name="liste">
+
+					<base:html.table.Table ID="tableTach">
+						<RowsData> ${typeTacheBean.allTypTach} </RowsData>
+						<Columns>
+							<base:html.table.TextColumn>
+								<Title> ${message("nom_groupe_tache.title")}</Title>
+								<Text> ${$row.nomTypTach}</Text>
+								<OnClick>
+									<base:action.ShowPage Page="/pages/Parametre/TypeTacheModif">
+										<Parameters>
+											<base:param.DynParam Name="id">
+												<Value>${$row.idTypTach}</Value>
+											</base:param.DynParam>
+											<base:param.ViewPointParam Name="previousUrl" />
+										</Parameters>
+									</base:action.ShowPage>
+								</OnClick>
+							</base:html.table.TextColumn>
+							<base:html.table.TextColumn>
+								<Title>${message("Suppr.title")}</Title>
+								<Text>supprimer</Text>
+								<OnClick>
+									<base:action.SwitchAction>
+										<Switch>${typeTacheBean.isInTache($row.idTypTach)}</Switch>
+										<Cases>
+											<base:action.Case Name="false">
+												<base:action.Ask Buttons="YesNo">
+													<AddParameters>
+														<base:param.DynParam Name="ID">
+															<Value> ${$row.idTypTach}</Value>
+														</base:param.DynParam>
+													</AddParameters>
+													<Title>${message("conf.title")}</Title>
+													<Message>${message("conf_suppr_groupe_tache.message")}
+													</Message>
+													<OnYes>
+														<base:action.DoAndForward>
+															<Do>${typeTacheBean.delete(request)} </Do>
+															<Forwards>
+																<base:action.Case Name="default">
+																	<base:action.ReloadThisPage></base:action.ReloadThisPage>
+																</base:action.Case>
+															</Forwards>
+														</base:action.DoAndForward>
+													</OnYes>
+													<OnNo>
+														<base:action.ReloadThisPage></base:action.ReloadThisPage>
+													</OnNo>
+												</base:action.Ask>
+											</base:action.Case>
+										</Cases>
+									</base:action.SwitchAction>
+								</OnClick>
+							</base:html.table.TextColumn>
+						</Columns>
+					</base:html.table.Table>
+				</base:html.form.field.TableField>
+			</base:html.form.Section>
+		</Items>
+	</base:html.form.ViewForm>
+</base:page.Composite>

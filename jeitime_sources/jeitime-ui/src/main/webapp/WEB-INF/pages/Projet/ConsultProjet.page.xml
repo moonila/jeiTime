@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet") || request.isUserInRole("gestionnaire")}</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${consultProjetBean.search(request)} 
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("view_projet.title")} ${consultProjetBean.nomProjet} </Title>
+
+	<base:html.form.ViewForm ID="main">
+		<Items>
+			<base:html.form.Section>
+				<Title>${message("info_gene.title")}</Title>
+				<base:html.form.field.TextField Cols="30">
+					<Label>${message("intitule_projet.label")}</Label>
+					<Editable>${consultProjetBean.editable} </Editable>
+					<Bind>${consultProjetBean.nomProjet}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.DateField>
+					<Label> ${message("date_debut_ob.label")}</Label>
+					<Editable>${consultProjetBean.editable} </Editable>
+					<Bind>${consultProjetBean.dateDebu}</Bind>
+				</base:html.form.field.DateField>
+				<base:html.form.field.DateField>
+					<Label> ${message("date_fin.label")}</Label>
+					<Editable>${consultProjetBean.editable} </Editable>
+					<Bind>${consultProjetBean.dateFin}</Bind>
+				</base:html.form.field.DateField>
+				<base:html.form.field.TextField>
+					<Label> ${message("type_projet.label")} </Label>
+					<Editable>${consultProjetBean.editable} </Editable>
+					<Bind>${consultProjetBean.nomTypPro}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("domaine.label")}</Label>
+					<Editable>${consultProjetBean.editable} </Editable>
+					<Bind>${consultProjetBean.nomDom}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("thematique.label")}</Label>
+					<Editable>${consultProjetBean.editable} </Editable>
+					<Bind>${consultProjetBean.nomThem}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("projet_rattache.label")}</Label>
+					<Editable>${consultProjetBean.editable} </Editable>
+					<Bind>${consultProjetBean.sousProjet}</Bind>
+				</base:html.form.field.TextField>
+			</base:html.form.Section>
+			<base:html.form.Section>
+				<Title>${message("client_part_rattache_projet.title")}</Title>
+				<base:html.form.field.TableField
+					Name="tableCliPart">
+					<base:html.table.Table ID="tablCliPart">
+						<RowsData> ${consultProjetBean.allCliPartSelect} </RowsData>
+						<Columns>
+							<base:html.table.TextColumn>
+								<Title> ${message("nom_client.title")} </Title>
+								<Text> ${$row.nomClientPart}</Text>
+							</base:html.table.TextColumn>
+							<base:html.table.TextColumn>
+								<Title> ${message("type.title")} </Title>
+								<Text> ${message(stringFormat("clientpartenaire.type.%s", $row.type))}</Text>
+							</base:html.table.TextColumn>
+						</Columns>
+					</base:html.table.Table>
+				</base:html.form.field.TableField>
+			</base:html.form.Section>
+			<base:html.form.Section>
+				<Title>${message("tache_asso_projet.title")}</Title>
+				<base:html.form.field.TableField
+					Name="tableTache">
+					<base:html.table.Table ID="tableTache">
+						<RowsData> ${consultProjetBean.alltache} </RowsData>
+						<Columns>
+							<base:html.table.TextColumn>
+								<Title> ${message("type_tache.title")}</Title>
+								<Text> ${$row.nomtache.typeTache.nomTypTach}</Text>
+							</base:html.table.TextColumn>
+							<base:html.table.TextColumn>
+								<Title> ${message("nom_tache.title")} </Title>
+								<Text> ${$row.nomtache.nomTache}</Text>
+							</base:html.table.TextColumn>
+							<base:html.table.TextColumn>
+								<Title>${message("prevision_budjet.title")} </Title>
+								<Text>${$row.budgetprevu}</Text>
+							</base:html.table.TextColumn>
+							<base:html.table.TextColumn>
+								<Title>${message("prevision_temps.title")} </Title>
+								<Text> ${$row.tpsprevu}</Text>
+							</base:html.table.TextColumn>
+							<base:html.table.TextColumn>
+								<Title> ${message("prio.title")}</Title>
+								<Text>${message(stringFormat("tache.priorite.%s", $row.priorite))}</Text>
+							</base:html.table.TextColumn>
+							<base:html.table.TextColumn>
+								<Title>${message("rd.title")}</Title>
+								<Text>${message(stringFormat("tache.eligible.%s", $row.eligible))}</Text>
+							</base:html.table.TextColumn>
+						</Columns>
+					</base:html.table.Table>
+				</base:html.form.field.TableField>
+			</base:html.form.Section>
+			<base:html.form.Section>
+				<Title> ${message("prevision_projet.title")} </Title>
+				<base:html.form.field.TextField>
+					<Label>${message("budget_previsionnel.label")}</Label>
+					<Bind>${consultProjetBean.budgeprevu} </Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("temps_previsionnel.label")} </Label>
+					<Bind>${consultProjetBean.tpsprevu}</Bind>
+				</base:html.form.field.TextField>
+			</base:html.form.Section>
+		</Items>
+	</base:html.form.ViewForm>
+</base:page.Composite>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<OnLoad>
+				<base:binding.Do>
+					${collaborateurBean.load(request)}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("consult_profil_util.title")}</Title>
+	<base:html.form.EditForm ID="userInfo">
+		<Items>
+			<base:html.form.Section>
+				<Title> ${message("info_util.title")}  </Title>
+				<base:html.form.field.TextField>
+					<Label>${message("login.label")}</Label>
+					<Editable>${false}</Editable>
+					<Bind>${collaborateurBean.login}</Bind>
+				</base:html.form.field.TextField>
+			</base:html.form.Section>
+		</Items>
+		<SubmitButtonLabel>${message("changer_pass.bouton")} </SubmitButtonLabel>
+		<OnSubmit>
+			<base:action.ShowPage Page="/pages/Collaborateur/ChangePassword">
+				<Parameters>
+					<base:param.DynParam Name="id">
+						<Value>${collaborateurBean.id}</Value>
+					</base:param.DynParam>
+					<base:param.ViewPointParam Name="fromUrl" />
+				</Parameters>
+			</base:action.ShowPage>
+		</OnSubmit>
+	</base:html.form.EditForm>
+	<base:html.form.ViewEditForm ID="main">
+		<Items>
+			<base:html.form.Section>
+				<Title> ${message("info_gene.title")} </Title>
+
+				<base:html.form.field.TextField Cols="30">
+					<Label>${message("nom2.label")}</Label>
+					<Bind>${collaborateurBean.nomColl}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField Cols="30">
+					<Label>${message("prenom.label")}</Label>
+					<Bind>${collaborateurBean.prenomColl}</Bind>
+				</base:html.form.field.TextField>
+
+				<base:html.form.field.SingleChoiceField
+					Type="ComboBox">
+					<Label>${message("equipe.label")}</Label>
+					<Visible>  ${request.isUserInRole("administrateur")|| request.isUserInRole("chef_de_projet") || request.isUserInRole("gestionnaire")} </Visible>
+					<Bind>${collaborateurBean.idEqu}</Bind>
+					<Items>
+						<base:html.item.DynamicItems>
+							<IterateOn>
+							${collaborateurBean.allEquip}
+						</IterateOn>
+							<Value>${$item.idEquip}</Value>
+							<Text>${$item.nomEquip}</Text>
+						</base:html.item.DynamicItems>
+					</Items>
+				</base:html.form.field.SingleChoiceField>
+				<base:html.form.field.SingleChoiceField
+					Type="ComboBox">
+					<Label>${message("status.label")}</Label>
+					<Visible>  ${request.isUserInRole("administrateur")}</Visible>
+					<Bind>${collaborateurBean.statutColl}</Bind>
+					<Items>
+						<base:html.item.DynamicItems>
+							<IterateOn>
+							${collaborateurBean.allStatus}
+						</IterateOn>
+							<Text>
+							${message(stringFormat("collaborateur.status.%s", $item))}
+						</Text>
+						</base:html.item.DynamicItems>
+					</Items>
+				</base:html.form.field.SingleChoiceField>
+				<base:html.form.Section>
+					<Title>${message("orga_temps_travail.title")}</Title>
+					<Visible>  ${request.isUserInRole("administrateur")}</Visible>
+					<base:html.form.field.SingleChoiceField
+						Type="ComboBox">
+						<Label>${message("college.label")}</Label>
+						<Bind>${collaborateurBean.idCollege}</Bind>
+						<Items>
+							<base:html.item.DynamicItems>
+								<IterateOn>
+							${collaborateurBean.allCollege}
+						</IterateOn>
+								<Value>${$item.idCollege}</Value>
+								<Text>${$item.nomCollege}</Text>
+							</base:html.item.DynamicItems>
+						</Items>
+						<OnChange>${collaborateurBean.selectCollege(collaborateurBean.idCollege)}</OnChange>
+					</base:html.form.field.SingleChoiceField>
+					<base:html.form.field.TextField>
+						<Label>${message("lundi.label")}</Label>
+						<Bind>${collaborateurBean.strNbHeureLundi}</Bind>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("mardi.label")}</Label>
+						<Bind>${collaborateurBean.strNbHeureMardi}</Bind>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("mercredi.label")}</Label>
+						<Bind>${collaborateurBean.strNbHeureMercredi}</Bind>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("jeudi.label")}</Label>
+						<Bind>${collaborateurBean.strNbHeureJeudi}</Bind>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("vendredi.label")}</Label>
+						<Bind>${collaborateurBean.strNbHeureVendredi}</Bind>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("nb_heures_annuel.label")}</Label>
+						<Bind>${collaborateurBean.strNbHeureAnnuel}</Bind>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("nb_heures_mensuel.label")}</Label>
+						<Bind>${collaborateurBean.strNbHeureMens}</Bind>
+					</base:html.form.field.TextField>
+				</base:html.form.Section>
+				<base:html.form.field.TextField>
+					<Label>${message("salaire_brut_an.label")}</Label>
+					<Visible>  ${request.isUserInRole("administrateur")}</Visible>
+					<Bind>${collaborateurBean.salaireColl}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("charges_an.label")}</Label>
+					<Visible>  ${request.isUserInRole("administrateur")}</Visible>
+					<Bind>${collaborateurBean.chargeColl}</Bind>
+				</base:html.form.field.TextField>
+			</base:html.form.Section>
+		</Items>
+		<AddButtons>
+			<base:html.menu.Button>
+				<Title>${message("retour.title")}</Title>
+				<OnClick>
+					<base:action.ShowPage Page="/pages/Collaborateur/ChoixUtili"></base:action.ShowPage>
+				</OnClick>
+				<Visible>  ${request.isUserInRole("administrateur")}</Visible>
+			</base:html.menu.Button>
+		</AddButtons>
+		<OnSubmit>
+			<base:action.DoAndForward>
+				<Do>${collaborateurBean.update()}</Do>
+				<Forwards>
+					<base:action.Case Name="success">
+						<base:action.ReloadThisPage></base:action.ReloadThisPage>
+					</base:action.Case>
+				</Forwards>
+			</base:action.DoAndForward>
+		</OnSubmit>
+		<OnResetChange>
+			<base:binding.Do>${collaborateurBean.refresh()}	</base:binding.Do>
+		</OnResetChange>
+	</base:html.form.ViewEditForm>
+</base:page.Composite>

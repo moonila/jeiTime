@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+	<Get name="securityHandler">
+		<Set name="loginService">
+			<New class="org.eclipse.jetty.security.HashLoginService">
+				<Set name="name">JaasConf</Set>
+				<!--
+					<Set
+					name="config">src/main/java/org/jeinnov/jeitime/integration_tests/file/conf.jaas</Set>
+				-->
+				<Set name="config">
+					<SystemProperty name="java.security.auth.login.config"
+						default="" />
+<!--						src/test/resources/realm.properties-->
+				</Set>
+				<Call name="start" />
+			</New>
+<!--			<New class="org.mortbay.jetty.plus.jaas.JAASUserRealm">-->
+<!--				<Set name="Name">JEITime</Set>-->
+<!--				<Set name="LoginModuleName">JaasConf</Set>-->
+<!--				<Set name="roleClassNames">-->
+<!--					<Array type="java.lang.String">-->
+<!--						<Item>persistence.bo.collaborateur.RolesCollab</Item>-->
+<!--					</Array>-->
+<!--				</Set>-->
+<!--				<Set name="userClassNames">persistence.bo.collaborateur.CollaborateurP</Set>-->
+<!--			</New>-->
+		</Set>
+<!--		<Set name="jaasUserRealm">-->
+<!--			-->
+<!--		</Set>-->
+		<Set name="checkWelcomeFiles">true</Set>
+	</Get>
+</Configure>

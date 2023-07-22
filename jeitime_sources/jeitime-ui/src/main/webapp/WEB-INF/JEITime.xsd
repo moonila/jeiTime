@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="utils.CSVExport" xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0" targetNamespace="utils.CSVExport">
+  <xs:complexType name="__import">
+    <xs:attribute name="File" type="xs:string" use="required"/>
+  </xs:complexType>
+</xs:schema>

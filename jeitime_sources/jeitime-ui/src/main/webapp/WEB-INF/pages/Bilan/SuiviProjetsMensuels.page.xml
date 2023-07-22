@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jeitime-export="org.jeinnov.jeitime.utils"
+	xsi:schemaLocation="org.ow2.opensuit.xml.base ../../base.xsd ../utils ../../JEITime.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") ||
+				request.isUserInRole("chef_de_projet") ||
+				request.isUserInRole("gestionnaire")}</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${recapProjetMensuel.load()} 
+				</base:binding.Do>
+
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("suivi_saisie_mois.title")} </Title>
+
+	<base:html.layout.Div>
+		<Visible>${recapProjetMensuel.voirDate}</Visible>
+		<base:html.form.EditForm ID="mainAnnee">
+			<Items>
+				<base:html.form.field.SingleChoiceField
+					Type="ComboBox">
+					<Label>${message("choix_mois.label")}</Label>
+					<Bind>${recapProjetMensuel.mois}</Bind>
+					<Items>
+						<base:html.item.DynamicItems>
+							<IterateOn>${recapProjetMensuel.AllMois}</IterateOn>
+							<Text>${message(stringFormat("alerte.mois.%s", $item))}</Text>
+						</base:html.item.DynamicItems>
+					</Items>
+				</base:html.form.field.SingleChoiceField>
+				<base:html.form.field.IntegerField>
+					<Label>${message("choix_annee.label")}</Label>
+					<Bind>${recapProjetMensuel.annee}</Bind>
+				</base:html.form.field.IntegerField>
+			</Items>
+			<OnSubmit>
+				<base:action.DoAndForward>
+					<Do>${recapProjetMensuel.voirProjet()} </Do>
+					<Forwards>
+						<base:action.Case Name="default">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnSubmit>
+		</base:html.form.EditForm>
+	</base:html.layout.Div>
+
+	<base:html.layout.Div>
+		<Visible>${recapProjetMensuel.voirProj}</Visible>
+		<base:html.table.Table ID="tablTypeProjet">
+			<RowsData> ${recapProjetMensuel.allprojet} </RowsData>
+			<Selection>
+				<base:html.table.SelectionBindings>
+					<RowID>${$row.idProjet}</RowID>
+					<SelectedIDs>${recapProjetMensuel.selectedProjet}</SelectedIDs>
+				</base:html.table.SelectionBindings>
+			</Selection>
+			<Toolbar>
+				<base:html.menu.Button>
+					<Title>${message("tout_selectionner.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${recapProjetMensuel.selectAll ()} </Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title>${message("tout_deselectionner.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${recapProjetMensuel.deSelectAll ()} </Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title>${message("affiche_tab_recap.title")} </Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<AddParameters>
+								<base:param.DynParam Name="tabl">
+									<Value>${recapProjetMensuel.selectedProjet} </Value>
+								</base:param.DynParam>
+							</AddParameters>
+							<Do>${recapProjetMensuel.voirTableau ()}</Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+			</Toolbar>
+			<Columns>
+				<base:html.table.TextColumn>
+					<Title> ${message("nom_projet.title")}</Title>
+					<Sort>
+						<base:html.table.NativeSorter />
+					</Sort>
+					<CellValue>${$row.nomProjet}</CellValue>
+					<Text> ${$row.nomProjet}</Text>
+				</base:html.table.TextColumn>
+				<base:html.table.DateColumn>
+					<Title>${message("date_debut.title")}</Title>
+					<Sort>
+						<base:html.table.NativeSorter />
+					</Sort>
+					<Date>${$row.dateDeb}</Date>
+				</base:html.table.DateColumn>
+				<base:html.table.DateColumn>
+					<Title>${message("date_prevu_fin.title")}</Title>
+					<Date>${$row.dateFin}</Date>
+				</base:html.table.DateColumn>
+				<base:html.table.DateColumn>
+					<Title>${message("date_fermeture.title")}</Title>
+					<Date>${$row.dateFermeture}</Date>
+				</base:html.table.DateColumn>
+				<base:html.table.DateColumn>
+					<Title>${message("date_cloture.title")}</Title>
+					<Date>${$row.dateCloture}</Date>
+				</base:html.table.DateColumn>
+			</Columns>
+		</base:html.table.Table>
+	</base:html.layout.Div>
+
+	<base:html.layout.Div>
+		<Visible>${recapProjetMensuel.voirTabl} </Visible>
+		<base:html.table.Table ID="recap">
+			<Title>${message("recap_saisie_collab_projet.title")} ${message(stringFormat("alerte.mois.%s",recapProjetMensuel.mois))} ${recapProjetMensuel.annee}</Title>
+			<RowsData>${recapProjetMensuel.items}</RowsData>
+			<Toolbar>
+				<base:html.menu.Button>
+					<Title>${message("mois_prec.title")} </Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${recapProjetMensuel.voirMoisPrec()}</Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title>${message("mois_suiv.title")} </Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${recapProjetMensuel.voirMoisSuiv()}</Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title> ${message("exporter_tout.title")}</Title>
+					<OnClick>
+						<base:html.table.export.ExportTableData>
+							<Format>
+								<jeitime-export:CSVExport Separator=";" />
+							</Format>
+						</base:html.table.export.ExportTableData>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title> ${message("retour.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${recapProjetMensuel.reset()}</Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+			</Toolbar>
+			<Columns>
+				<base:html.table.TextColumn>
+					<Title>
+					</Title>
+					<Text>${recapProjetMensuel.getHtmlName($row)}</Text>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn IteratorVar="$jours">
+					<IterateOn>${recapProjetMensuel.jour}</IterateOn>
+					<Title>${$jours.num}</Title>
+					<Text>${recapProjetMensuel.getValue($row, $jours.num)}</Text>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn>
+					<Title>${message("total.title")}</Title>
+					<CellValue>${recapProjetMensuel.getTotal($row)}</CellValue>
+				</base:html.table.TextColumn>
+			</Columns>
+		</base:html.table.Table>
+	</base:html.layout.Div>
+</base:page.Composite>

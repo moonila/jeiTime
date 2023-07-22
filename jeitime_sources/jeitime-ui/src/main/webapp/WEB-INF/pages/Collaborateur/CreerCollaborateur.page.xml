@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") }</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${collaborateurBean.loadInformations()}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("collaborateur_creer.title")}</Title>
+	<base:html.form.EditForm ID="main">
+		<Items>
+			<base:html.form.Section>
+				<Title>${message("info_util.title")}</Title>
+				<base:html.form.field.TextField>
+					<Label> ${message("choisir_login.label")} </Label>
+					<Bind>${collaborateurBean.login}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("pass.label")}</Label>
+					<Bind>${collaborateurBean.password}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+					<IsPassword>${true}</IsPassword>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("confirm_pass.label")}</Label>
+					<Bind>${collaborateurBean.confirmPass}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+					<IsPassword>${true}</IsPassword>
+				</base:html.form.field.TextField>
+			</base:html.form.Section>
+			<base:html.form.Section>
+				<Title>${message("info_gene.title")}</Title>
+				<base:html.form.field.TextField Cols="30">
+					<Label>${message("nom2.label")}</Label>
+					<Bind>${collaborateurBean.nomColl}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField Cols="30">
+					<Label>${message("prenom2.label")}</Label>
+					<Bind>${collaborateurBean.prenomColl}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+				</base:html.form.field.TextField>
+				<base:html.form.field.SingleChoiceField
+					Type="ComboBox">
+					<Label>${message("equipe.label")}</Label>
+					<Bind>${collaborateurBean.idEqu}</Bind>
+					<Items>
+						<base:html.item.DynamicItems>
+							<IterateOn>
+							${collaborateurBean.allEquip}
+						</IterateOn>
+							<Value>${$item.idEquip}</Value>
+							<Text>${$item.nomEquip}</Text>
+						</base:html.item.DynamicItems>
+					</Items>
+				</base:html.form.field.SingleChoiceField>
+				<base:html.form.field.SingleChoiceField
+					Type="ComboBox">
+					<Label>${message("status2.label")}</Label>
+					<Bind>${collaborateurBean.statutColl}</Bind>
+					<Items>
+						<base:html.item.DynamicItems>
+							<IterateOn>${collaborateurBean.allStatus}</IterateOn>
+							<Text>${message(stringFormat("collaborateur.status.%s", $item))}</Text>
+						</base:html.item.DynamicItems>
+					</Items>
+				</base:html.form.field.SingleChoiceField>
+			</base:html.form.Section>
+			<base:html.form.Section>
+				<Title>${message("orga_temps_travail.title")}</Title>
+				<base:html.form.field.SingleChoiceField
+					Type="ComboBox">
+					<Label>${message("college.label")}</Label>
+					<Bind>${collaborateurBean.idCollege}</Bind>
+					<Items>
+						<base:html.item.DynamicItems>
+							<IterateOn>
+							${collaborateurBean.allCollege}
+						</IterateOn>
+							<Value>${$item.idCollege}</Value>
+							<Text>${$item.nomCollege}</Text>
+						</base:html.item.DynamicItems>
+					</Items>
+					<OnChange>${collaborateurBean.selectCollege(collaborateurBean.idCollege)} </OnChange>
+				</base:html.form.field.SingleChoiceField>
+				<base:html.form.field.TextField>
+					<Label>${message("lundi.label")}</Label>
+					<Bind>${collaborateurBean.strNbHeureLundi}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("mardi.label")}</Label>
+					<Bind>${collaborateurBean.strNbHeureMardi}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("mercredi.label")}</Label>
+					<Bind>${collaborateurBean.strNbHeureMercredi}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("jeudi.label")}</Label>
+					<Bind>${collaborateurBean.strNbHeureJeudi}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("vendredi.label")}</Label>
+					<Bind>${collaborateurBean.strNbHeureVendredi}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("nb_heures_annuel.label")}</Label>
+					<Bind>${collaborateurBean.strNbHeureAnnuel}</Bind>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField>
+					<Label>${message("nb_heures_mensuel.label")}</Label>
+					<Bind>${collaborateurBean.strNbHeureMens}</Bind>
+				</base:html.form.field.TextField>
+			</base:html.form.Section>
+			<base:html.form.Section>
+				<Title> ${message("info_salaire.title")}</Title>
+				<base:html.form.field.TextField Cols="30">
+					<Label>${message("salaire_brut.title")}</Label>
+					<Bind>${collaborateurBean.salaireColl}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+				</base:html.form.field.TextField>
+				<base:html.form.field.TextField Cols="30">
+					<Label>${message("charges_an.label")}</Label>
+					<Bind>${collaborateurBean.chargeColl}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+				</base:html.form.field.TextField>
+			</base:html.form.Section>
+		</Items>
+		<SubmitButtonLabel>
+			${message("envoyer.bouton")}
+		</SubmitButtonLabel>
+		<OnValidate>${collaborateurBean.validatePassword()}</OnValidate>
+		<OnSubmit>
+			<base:action.DoAndForward>
+				<Do>${collaborateurBean.create()}</Do>
+				<Forwards>
+					<base:action.Case Name="success">
+						<base:action.ShowPage Page="/pages/Collaborateur/ChoixUtili">
+						</base:action.ShowPage>
+					</base:action.Case>
+				</Forwards>
+			</base:action.DoAndForward>
+		</OnSubmit>
+	</base:html.form.EditForm>
+</base:page.Composite>

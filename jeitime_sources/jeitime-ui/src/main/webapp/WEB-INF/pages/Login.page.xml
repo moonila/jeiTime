@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Context>
+		<base:page.ctx.Definition>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>Interface d'authentification</Title>
+	<base:html.layout.Div ID="Login">
+		<Visible>
+			${not request.isUserInRole("ROLE_AUTH")}
+		</Visible>
+		<base:html.Include Path="/login.jsp">
+		</base:html.Include>
+	</base:html.layout.Div>
+
+</base:page.Composite>

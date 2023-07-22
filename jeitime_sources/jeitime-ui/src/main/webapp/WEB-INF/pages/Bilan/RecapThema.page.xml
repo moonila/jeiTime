@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jeitime-export="org.jeinnov.jeitime.utils"
+	xsi:schemaLocation="org.ow2.opensuit.xml.base ../../base.xsd ../utils ../../JEITime.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") ||
+				request.isUserInRole("chef_de_projet") ||
+				request.isUserInRole("gestionnaire")}</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${recapBeanThema.load()} 
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("recap_th.title")}</Title>
+
+	<!-- 
+		Choix de la période
+		*******************
+	-->
+	<base:html.layout.Div>
+		<Visible>${recapBeanThema.voirDate}</Visible>
+		<base:html.form.EditForm ID="main">
+			<Items>
+				<base:html.form.field.DateField>
+					<Label> ${message("date_debut.label")}</Label>
+					<Bind>${recapBeanThema.dateDeb}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+				</base:html.form.field.DateField>
+				<base:html.form.field.DateField>
+					<Label> ${message("date_fin.label")}</Label>
+					<Bind>${recapBeanThema.dateFin}</Bind>
+					<Validators>
+						<base:validation.Mandatory />
+					</Validators>
+				</base:html.form.field.DateField>
+			</Items>
+			<SubmitButtonLabel> ${message("envoyer.bouton")}	</SubmitButtonLabel>
+			<OnValidate>${recapBeanThema.validate()}</OnValidate> 
+			<OnSubmit>
+				<base:action.DoAndForward>
+					<Do>${recapBeanThema.envoyer()}</Do>
+					<Forwards>
+						<base:action.Case Name="success">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnSubmit>
+		</base:html.form.EditForm>
+	</base:html.layout.Div>
+	<!--
+		Afichage du tableau de séléction des thématiques
+		************************************************
+	-->
+	<base:html.layout.Div>
+		<Visible>${recapBeanThema.voirThema}</Visible>
+		<base:html.table.Table ID="tablTypeProjet">
+			<RowsData> ${recapBeanThema.allThema} </RowsData>
+			<Selection>
+				<base:html.table.SelectionBindings>
+					<RowID>${$row.idThema}</RowID>
+					<SelectedIDs>${recapBeanThema.selectedThema}</SelectedIDs>
+				</base:html.table.SelectionBindings>
+			</Selection>
+			<Toolbar>
+				<base:html.menu.Button>
+					<Title>${message("tout_selectionner.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${recapBeanThema.selectAllThema ()} </Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title>${message("tout_deselectionner.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${recapBeanThema.deSelectAllThema ()} </Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title>${message("affiche_tab_recap.title")} </Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<AddParameters>
+								<base:param.DynParam Name="tabl">
+									<Value>${recapBeanThema.selectedThema} </Value>
+								</base:param.DynParam>
+							</AddParameters>
+							<Do>${recapBeanThema.voirTableauThema ()}</Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+			</Toolbar>
+			<Columns>
+				<base:html.table.TextColumn>
+					<Title> ${message("th.title")}</Title>
+					<Text> ${$row.nomThema}</Text>
+				</base:html.table.TextColumn>
+			</Columns>
+		</base:html.table.Table>
+
+	</base:html.layout.Div>
+
+	<!--
+		Affichage du tableau récapitulatif par thématique séléctionnées
+		***************************************************************
+	-->
+	<base:html.layout.Div>
+		<Visible>${recapBeanThema.voirTablThema} </Visible>
+		<base:html.table.Table ID="recap">
+			<Title>${message("recap_saisie_th.title")} </Title>
+			<RowsData>${recapBeanThema.items}</RowsData>
+			<Toolbar>
+				<base:html.menu.Button>
+					<Title> ${message("export.title")}</Title>
+					<OnClick>
+						<base:html.table.export.ExportTableData>
+							<Format>
+								<jeitime-export:CSVExport Separator=";" />
+							</Format>
+						</base:html.table.export.ExportTableData>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title> ${message("retour.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${recapBeanThema.reset()}</Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+			</Toolbar>
+			<Columns>
+				<base:html.table.TextColumn>
+					<Title>
+					</Title>
+					<Text>${recapBeanThema.getHtmlName($row)}</Text>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn IteratorVar="$collab">
+					<IterateOn>${recapBeanThema.collaborateurs}</IterateOn>
+					<Title>${$collab.nomColl}</Title>
+					<CellValue>${recapBeanThema.getValue($row, $collab)}</CellValue>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn>
+					<Title>${message("total.title")}</Title>
+					<CellValue>${recapBeanThema.getTotal($row)}</CellValue>
+				</base:html.table.TextColumn>
+			</Columns>
+		</base:html.table.Table>
+	</base:html.layout.Div>
+</base:page.Composite>

@@ -1,0 +1,1542 @@
+/* ========================================== */
+/* General style overriding */
+/* ========================================== */
+body * {
+	font-family: "Verdana";
+	font-size:11px;
+}
+body {
+	/* Force hover behavior for IE */
+	behavior: url("../../resources/css/csshover.htc");
+}
+p, form, h1, h2, h3, h4, h5, h6, input, select, textarea, div, a, ul, li, ol{
+	margin:0;
+	padding:0;
+	font-weight:normal;
+	list-style:none;
+}
+input, select, textarea {font-size:100%;}
+table {
+	border-collapse:collapse;
+}
+table acronym{border:0;	border-collapse:collapse}
+td{padding:0}
+a, a:visited, a:link {
+	text-decoration:underline;
+	color: #999999;
+}
+a:hover {
+	color: #FFCC66;
+}
+a img, acronym{border:none}
+.dn {display:none !important;}
+.cb {clear:both !important;}
+.noborder {border:none}
+.fl {float:left !important;}
+.fr {float:right !important;}
+.ac {text-align:center !important;}
+.bold {font-weight:bold;}
+
+img
+{
+	margin: 2px 5px 2px 0;
+	vertical-align: middle;
+}
+
+/* Correction des bug Internet Explorer */
+* html button {width:1%; overflow:visible;}
+*:first-child+html button {overflow:visible;}
+
+/* ========================================== */
+/* Common layout elements */
+/* ========================================== */
+body {
+	margin:0;
+	/* background:url("../img/background2.gif"); */
+	text-align:center;
+	color: #404040;
+}
+div.Frame {
+	text-align: left;
+	background-color: #FFFFFF;
+	border: 1px solid #666666;
+	margin:20px;
+	display: block;
+	position: relative;
+}
+#header {
+/*	background:url("../img/banner_bg.jpg") repeat-x;*/
+	height: 65px;
+	padding: 30px 20px 0 400px;
+	/*margin-bottom: 20px;*/
+	position: relative;
+	display:block;
+	vertical-align: bottom;
+	font-weight: bold;	
+	font-size: 25px;
+	background: url(../img/JEITIME.jpg)  center no-repeat;  
+}
+#sidebar {
+	margin-left: 20px;
+	/* why ??? */
+	_margin-left: 10px;
+	vertical-align: top;
+	float: left;
+	width: 200px;
+	position: relative;
+	z-index: 2;
+} 
+.page-title {
+	background: #666666 5px center no-repeat;
+	padding: 5px 0 5px 15px;
+	color: #FFCC66;
+	text-transform:uppercase;
+	font-weight: bold;
+	display:block;
+	border-bottom: 1px solid #FFFFFF ;
+	/* if not here, fantom DIV bug on IE */
+	position: relative;
+	font-size:130%;
+}
+
+#page-container {
+	border: 1px solid #666666;
+	display: block;
+	position: relative;
+	z-index: 1;
+	margin-left: 230px;
+	margin-right: 20px;
+	background-color: #FFFFFF;
+	min-height: 625px;
+	/* Pour IE */
+	_height: 625px;
+	/*overflow: hidden;*/
+}
+#footer {
+	padding-top: 10px;
+	padding-bottom: 5px;
+	margin-top: 20px;
+	text-align:center;
+	background:url("../img/filets.jpg") left top repeat-x;
+}
+#footer ul {
+	display: inline;
+	background:url("../img/footer_bullet.gif") right center no-repeat;
+	padding-right: 5px;
+}
+#footer ul li {
+	display: inline;
+	background:url("../img/footer_bullet.gif") left center no-repeat;
+	padding: 0 3px 0 9px;
+}
+
+#errorbox, #askbox, #messagebox {
+	margin: 20px;
+}
+#errorbox #stack {
+	overflow-x: auto;
+/*	_width: 100%;*/
+}
+.text {
+	margin: 20px 0 20px 20px;
+}
+
+/* ==================================== */
+/* (vertical) Menu style                */
+/* ==================================== */
+div.Menu
+{
+	margin-bottom: 5px;
+	border: 1px solid #666666;
+}
+div.Menu .title
+{
+	/* For IE only */
+/*	_width: 100%;*/
+	_height: 1%;
+	background:#666666 5px center no-repeat;
+	padding: 5px 0 5px 15px;
+	color: #FFCC66;
+	text-transform:uppercase;
+	font-weight: bold;
+	display:block;
+	border-bottom: 1px solid  #FFFFFF;
+	font-size: 130%;
+}
+div.Menu li
+{
+	/* cure IE5.x "whitespace in lists" problem */
+	_float: left;
+	_width: 100%;
+}
+div.Menu li span,
+div.Menu li a,
+div.Menu li a:link,
+div.Menu li a:visited
+{
+	/* For IE only */
+/*	_width: 100%;*/
+	_height: 1%;
+	background: #FFFFFF url("../img/bulet_nav.gif") 10px center no-repeat;
+	padding: 5px 5px 5px 20px;
+	color:#404040;
+	font-weight: normal;
+	text-decoration: none;
+	border-bottom: 1px solid  #F8F8F8;
+	display:block;
+}
+div.Menu ul li a:hover
+{
+	background-color: #FFFFFF;
+	color: #FFCC66;
+}
+div.Menu hr
+{
+	border: 0;
+	border-top: 10px solid #666666;
+	padding: 0;
+	margin: 0;
+}
+
+/* Sub menu */
+/*
+div.Menu ul li.submenu
+{
+	background-color :#F8F8F8;
+}
+div.Menu ul li.submenu:hover
+{
+	background-color: #FFFFFF;
+}
+*/
+div.Menu ul a.submenu
+{
+/*	background-color: transparent;*/
+	background-image: url("../img/bulet_title.gif");
+}
+div.Menu ul a.submenu:hover,
+div.Menu ul li.submenu:hover a.submenu,
+div.Menu li.focus a.submenu
+{
+	background: url("../img/bulet_title_dwn.gif") 9px center no-repeat;
+	background-color: #FFFFFF;
+	cursor: default;
+}
+div.Menu ul ul,
+div.Menu ul li.submenu:hover ul ul
+{display: none;}
+
+div.Menu ul li.submenu:hover ul,
+div.Menu ul ul li.submenu:hover ul
+{display: block;}
+
+/* Sub-menu popup out on the right */
+div.Menu li.submenu:hover
+{
+	position: relative;
+}
+div.Menu ul ul
+{
+	position: absolute;
+	width: 80%;
+	z-index: 3;
+	border: 2px solid #E8E8E8;
+	top: 20px;
+	left: 25%;
+}
+/* ==================================== */
+/* HeaderMenu style                */
+/* ==================================== */
+div.HeaderMenu
+{
+	position: absolute;
+	overflow: hidden;
+	right: 20px;
+	top: 77px;
+}
+div.HeaderMenu ul li
+{
+	float: left;
+	padding: 0 5px;
+}
+
+div.HeaderMenu .title
+{
+	display:none;
+}
+div.LanguageBar
+{
+	float: right;
+}
+div.LanguageBar ul li
+{
+	float: left;
+	padding: 0 2px;
+}
+div.LanguageBar img
+{
+	padding: 1px;
+	margin: 0;
+	border: 1px solid transparent;
+}
+div.LanguageBar span.selected img
+{
+	border: 1px solid #FFCC66;
+}
+div.LanguageBar a:hover img
+{
+	border: 1px solid #4F4D4E;
+}
+/* ============================ */
+/* Links style                  */
+/* ============================ */
+div.Links {
+	display: block;
+	overflow: hidden;
+	padding: 5px 0 15px 0;
+}
+div.Links span.Title {
+	color:#000000;
+	font-weight: bold;
+	display:block;
+	width:30%;
+	float:left;
+	text-align:right;
+}
+div.Links ul {
+	display:block;
+	float:left;
+	padding-left: 10px;
+}
+div.Links ul li {
+	padding-right: 8px;
+	float: left;
+}
+
+/* ============================ */
+/* ButtonsBar style             */
+/* ============================ */
+
+div.Buttons {
+	/* fixes the IE6 jump on hover bug */
+	zoom: 1;
+	text-align: left;
+	display: block;
+	padding: 10px 0;
+	padding-left: 210px;
+	overflow: hidden;
+}
+div.Buttons ul li {
+	float: left;
+}
+div.Buttons a,
+div.Buttons a:link,
+div.Buttons a:visited,
+div.Buttons input,
+div.Buttons span.disabled
+{
+	white-space:nowrap;
+	text-align:center;
+	vertical-align:middle;
+	background-color: #F3F3F3;
+	cursor: pointer !important;
+	color: #404040;
+	/*font-size: 10px;*/
+	font-size: 90%;
+	font-weight:bold;
+	border: 3px double #CECECE;
+	margin: 0 3px;
+	display: block;
+	text-decoration:none;
+	padding: 3px 6px 4px 6px;
+}
+/* negative margins for an image inside a button */
+div.Buttons li img
+{
+	margin: -3px 3px -3px -3px;
+}
+div.Buttons span.disabled
+{
+	color: #C4C4C4;
+}
+div.Buttons input
+{
+	padding: 2px 4px 3px 4px;
+	/* For IE */
+	_padding: 2px 0 2px 0;
+}
+div.Buttons a:hover,
+div.Buttons input:hover
+{
+	background-color: #DEDEDE;
+	color: #404040;
+}
+/* ============================ */
+/* field buttons style          */
+/* ============================ */
+ul.fieldbuttons {
+	overflow: hidden;
+	float: left;
+	padding: 5px 4px;
+}
+ul.fieldbuttons li {
+	float: left;
+}
+ul.fieldbuttons a,
+ul.fieldbuttons a:link,
+ul.fieldbuttons a:visited,
+ul.fieldbuttons input,
+ul.fieldbuttons span.disabled
+{
+	white-space:nowrap;
+	text-align:center;
+	vertical-align:middle;
+	background-color: #F3F3F3;
+	cursor: pointer !important;
+	color: #404040;
+	font-weight: bold;
+	display: block;
+	
+	text-decoration:none;
+	
+	padding: 1px 3px;
+	margin: 0 2px;
+	font-size: 80%;
+	border: 3px double #CECECE;
+}
+ul.fieldbuttons span.disabled
+{
+	color: #C4C4C4;
+}
+ul.fieldbuttons input
+{
+	padding: 0;
+}
+ul.fieldbuttons a:hover,
+ul.fieldbuttons input:hover
+{
+	background-color: #DEDEDE;
+	color: #404040;
+}
+
+/* ============================ */
+/* Toolbar style                */
+/* ============================ */
+div.Toolbar {
+	position: absolute;
+	overflow: hidden;
+	right: 3px;
+	top: 2px;
+	
+	border: 3px double #CECECE;
+	padding: 0;
+}
+div.Toolbar ul li {
+	float: left;
+}
+
+div.Toolbar a,
+div.Toolbar a:link,
+div.Toolbar a:visited,
+div.Toolbar input,
+div.Toolbar span.disabled
+{
+	white-space:nowrap;
+	text-align:center;
+	vertical-align:middle;
+	background-color: #F3F3F3;
+	cursor: pointer !important;
+	color: #404040;
+	font-weight:bold;
+	display: block;
+	
+	text-decoration:none;
+	
+	padding: 0px 3px;
+	margin: 0;
+	font-size: 80%;
+	border: 0;
+	border-left: 1px solid #CECECE;
+}
+div.Toolbar span.disabled
+{
+	color: #C4C4C4;
+}
+div.Toolbar input
+{
+	padding: 0;
+}
+div.Toolbar a:hover,
+div.Toolbar input:hover
+{
+	background-color: #4F4D4E;
+	color: #FFFFFF;
+}
+/* ============================ */
+/* Style du  TabPage par d�faut */
+/* ============================ */
+div.Tab {
+	background: url("../img/tab_bar.gif") bottom repeat-x;
+	/* clearing fix */
+	overflow: hidden;
+	_overflow: visible;
+	_height: 1%;
+	padding-left: 20px;
+	padding-top: 10px;
+	margin: 0 10px;
+}
+div.Tab li {
+	float: left;
+}
+div.Tab a,
+div.Tab a:visited,
+div.Tab a:link,
+div.Tab span,
+div.Tab .Selected
+{
+	white-space:nowrap;
+	text-align:center;
+	text-decoration:none;
+	vertical-align:middle;
+	background-color: #E8E8E8;
+	cursor: pointer !important;
+	color: #404040;
+	font-size: 90%;
+	font-weight:bold;
+	border: 3px double #BEBEBE;
+	border-bottom: 1px solid #BEBEBE;
+	margin: 0 2px 0 2px;
+	padding: 3px 7px 4px 7px;
+	display: block;
+}
+div.Tab .Selected {
+	color:#000000;
+	background-color: #F3F3F3;
+	border-bottom-color: #F3F3F3;
+}
+div.Tab .Disabled {
+	color: #C4C4C4;
+}
+div.Tab a:hover {
+	background-color: #DEDEDE;
+	color: #404040;
+}
+div.Tab img {
+	margin: -5px 3px -5px -3px;
+}
+
+div.TabContent {
+	margin: 0px 10px;
+	border: 1px solid #BEBEBE;
+	border-top-width: 0;
+	padding: 13px;
+	background-color: #F3F3F3;
+	display: block;
+	min-height: 300px;
+	/* For IE */
+	_height: 300px;
+	overflow: auto;
+	_overflow: visible;
+}
+
+
+
+
+div.TabV {
+	background: url("../img/tab_vbar.gif") right repeat-y;
+	padding-top: 20px;
+	margin: 10px 0 10px 10px;
+	float: left;
+	width: 100px;
+}
+div.TabV ul {
+	display: block;
+}
+div.TabV ul li {
+	display: block;
+}
+div.TabV a,
+div.TabV a:visited,
+div.TabV a:link,
+div.TabV span
+{
+	/*
+	display:-moz-inline-box;
+	display:inline-block;
+	*/
+	white-space:nowrap;
+	text-align:center;
+	text-decoration:none;
+	vertical-align:middle;
+	background-color: #E8E8E8;
+	cursor: pointer !important;
+	color: #404040;
+	/*font-size: 10px;*/
+	font-size: 90%;
+	font-weight:bold;
+	border: 3px double #BEBEBE;
+	border-right: 1px solid #BEBEBE;
+	margin: 2px 0 2px 0;
+	padding: 3px 7px 4px 7px;
+	display: block;
+/*	_width: 100%;*/
+/*	-moz-border-radius: 2px;*/
+/*	float: left;*/
+/*	height: 20px;*/
+}
+div.TabV .Selected {
+	color:#000000;
+	background-color: #F3F3F3;
+	border-right-color: #F3F3F3;
+}
+div.TabV .Disabled {
+	color: #C4C4C4;
+}
+div.TabV a:hover {
+	background-color: #DEDEDE;
+	color: #404040;
+}
+
+div.TabVContent {
+	/*margin: 10px 10px 10px 0;*/
+	margin: 10px 10px 10px 110px;
+	border: 1px solid #BEBEBE;
+	border-left-width: 0px;
+	padding: 13px;
+	background-color: #F3F3F3;
+	min-height: 400px;
+	/* For IE */
+	_height: 400px;
+}
+
+
+
+/* ========================= */
+/* Style du  Form par d�faut */
+/* ========================= */
+div.Form {
+	background-color: #FFFFFF;
+	color: #404040;
+	padding:0;
+	margin-top: 10px;
+	position: relative;
+}
+div.Form fieldset {
+	margin: 0;
+	padding: 0;
+	margin-top: 10px;
+	border: 0;
+	background:url("../img/filets.jpg") left 0px repeat-x;
+}
+div.Form legend {
+	color:#000000; 
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 100%;
+	
+	text-transform:uppercase;
+	font-style: italic;
+	background:#FFFFFF;
+	margin-left: 50px;
+	padding: 0px 8px 0px 8px;
+}
+
+div.Form div.field {
+	display: block;
+	/*border-bottom: 1px solid #D9D9D9;
+	border-top: 1px solid #FFFFFF;*/
+	/* clearing fix */
+	_width: 100%;
+	overflow: hidden;
+}
+div.Form div.even {
+	/*background-color: #F8F8F8;*/
+}
+div.Form p.info {
+	padding: 8px;
+}
+div.Form label.field {
+	color:#999999;
+	
+	display:block;
+	width:200px;
+	float:left;
+	padding: 8px 0;
+	text-align:right;
+}
+
+div.Form div.field div.input {
+	float: left;
+	padding: 8px 0 8px 10px;
+}
+div.Form div.field input,
+div.Form div.field select
+{
+	margin: 0 5px 0 0;
+	border: 1px solid #FFCC66;
+	padding: 1px 2px;
+	background-color: #FFFFFF;
+	vertical-align: middle;
+}
+div.Form div.field input.checkbox,
+div.Form div.field input.radio
+{
+	border: 0;
+	background-color: transparent;
+}
+div.Form ul.errors
+{
+	float: left;
+	margin: 8px 5px;
+}
+div.Form ul.errors li
+{
+	display: block;
+	font-size: 80%;
+	color: #000000;
+	background:url("../img/error.gif") left center no-repeat;
+	padding-left: 7px;
+}
+div.PercentageBar {
+	position: relative;
+	border: 1px solid #FFCC66;
+	background-color: #FFFFFF;
+	width: 300px;
+/*	height: 17px;*/
+	padding: 2px;
+}
+div.PercentageBar div.Bar {
+	background-color: #FFFFFF;
+}
+div.PercentageBar div.Percentage {
+	position: absolute;
+	left:0;
+	top: 2px;
+	float: none;
+	color: #FFCC66;
+	font-weight: bold;
+	width: 100%;
+	text-align: center;
+}
+/* ========================= */
+/* Style du Form Compact     */
+/* ========================= */
+div.Compact
+{
+	display: block;
+	width:100%;
+	overflow: hidden;
+	position: relative;
+	border-bottom: 1px solid #D9D9D9;
+}
+div.Compact div.field
+{
+	border: none;
+}
+div.Compact div.Fields
+{
+	width: 270px;
+	float:left;
+}
+div.Compact label.field
+{
+	width: 100px;
+}
+div.Compact div.Buttons
+{
+	float:left;
+	width: auto;
+/*	margin: 30px 0 0 0;*/
+	margin: 7px 0;
+	padding: 0;
+}
+div.Compact div.field
+{
+	min-height: 50px;
+	_height: 50px;
+	background-color: transparent !important;
+}
+div.Compact ul.errors
+{
+	position: absolute;
+/*	top: 40px;*/
+	bottom: 0px;
+	left: 110px;
+	/*
+	clear: both;
+	float: left;
+	margin: 0 0 0 130px;
+	*/
+}
+/*
+div.Compact legend
+{
+	text-align: right;
+	width: 100%;
+}
+*/
+
+/* ========================= */
+/* Calendar */
+/* ========================= */
+a.CalendarButton {
+	text-decoration: none;
+	background: url(../img/calendar.gif) no-repeat;
+	width: 17px;
+	height: 17px;
+	display: inline-block;
+	margin-right: 5px;
+	overflow: hidden;
+	vertical-align: middle;
+	font-size: 0; /* do not display text */
+	text-indent: -5000px;
+}
+a.CalendarButton:hover {
+	background-image: url(../img/calendar_h.gif);
+}
+/* Rule that is retrieved by JavaScript code that opens the popup window */
+.CalendarWindow {
+	width: 400px;
+	height: 180px;
+}
+/* calendar table (and inner borders) */
+table.Calendar {
+	background-color: #FFFFFF;
+	color: #404040;
+	border-collapse: collapse;
+	padding:0;
+	border: 3px double #9D9D9D;
+	margin: 10px auto;
+}
+table.Calendar tr.Toolbar th {
+	border-bottom: 3px double #9D9D9D;
+}
+table.Calendar th, table.Calendar td {
+	border: 1px solid #9D9D9D;
+}
+/* toolbar */
+table.Calendar tr.Toolbar div {
+	position: relative;
+	display: block;
+	padding: 5px 0;
+	width: 100%;
+	background-color: #E8E8E8;
+	color: #FFCC66;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+table.Calendar tr.Toolbar a {
+	text-decoration: none;
+	display: block;
+	position: absolute;
+	display: block;
+	overflow: hidden;
+	top: 7px;
+}
+table.Calendar a.PrevYear {
+	background-image: url(../img/back2_big.gif);
+	width: 10px;
+	height: 9px;
+	left: 5px;
+}
+table.Calendar a.PrevMonth {
+	background-image: url(../img/back_big.gif);
+	width: 5px;
+	height: 9px;
+	left: 20px;
+}
+table.Calendar a.NextMonth {
+	background-image: url(../img/next_big.gif);
+	width: 5px;
+	height: 9px;
+	right: 20px;
+}
+table.Calendar a.NextYear {
+	background-image: url(../img/next2_big.gif);
+	width: 10px;
+	height: 9px;
+	right: 5px;
+}
+table.Calendar td span,
+table.Calendar td a,
+table.Calendar td a:visited,
+table.Calendar td a:link,
+table.Calendar td a
+{
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	padding: 1px 3px;
+	text-decoration: none;
+}
+table.Calendar td.Week span {
+	font-weight: normal;
+	font-style: italic;
+}
+table.Calendar td.Day a {
+	cursor: pointer;
+}
+table.Calendar td.Day a.Selected {
+	color: #FFCC66;
+}
+table.Calendar td.Day a.OutMonth {
+	color: #999999;
+}
+table.Calendar td.Day a.WeekEnd {
+	background-color: #E8E8E8;
+}
+table.Calendar td.Day a:hover {
+	background-color: #FFFFFF;
+	color: #FFCC66;
+}
+
+/* ========================= */
+/* Style de Table par d�faut */
+/* ========================= */
+div.Table {
+	/*background-color: #E8E8E8;*/
+	color: #999999;
+	margin-top: 10px;
+	/*border-top: 2px solid #D9D9D9;
+	border-bottom: 1px solid #D9D9D9;*/
+	overflow-x:auto;
+}
+div.Table table {
+	background-color: #FFFFFF;
+	border-collapse:collapse;
+	padding: 0;
+	width: 100%;
+	margin-top: 1px;
+}
+/* Title */
+div.Table .Title {
+	color:#000000;
+	text-transform:uppercase;
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 90%;
+	padding: 0px 8px 0px 8px;
+	text-align: left;
+	font-style: italic;
+}
+/* navigation bar */
+div.Table div.navigation {
+	/* clearing fix */
+	overflow: hidden;
+	_overflow: visible;
+	_height: 1%;
+	padding: 5px 10px;
+	border-bottom: 1px solid #D9D9D9;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+div.Table .range {
+	font-weight: italic;
+	float: left;
+	font-size: 80%;
+	/*font-color: #FFFFFF*/
+}
+div.Table .pagelinks {
+	font-weight: bold;
+	float: right;
+}
+div.Table .pagelinks * {
+	margin-left: 5px;
+}
+div.Table .pagelinks .prevd,
+div.Table .pagelinks .nextd
+{
+	color: #B4B4B4;
+}
+/* toolbar */
+div.Table div.toolbar {
+	padding: 5px 5px;
+	border-bottom: 1px solid #D9D9D9;
+}
+div.Table div.toolbar div.Buttons {
+	padding: 0;
+	margin: 0;
+	text-align: left;
+	display: block;
+	overflow: hidden;
+	float: none;
+}
+
+div.Table div.toolbar div.Buttons a, table.Table div.Buttons span {
+	font-size: 80%;
+	padding: 0px 3px;
+	margin: 0 2px;
+}
+/* headers */
+div.Table tr.headers th {
+	vertical-align: top;
+	/*border-bottom: 2px solid #D9D9D9;*/
+}
+div.Table tr.headers div.filter {
+	white-space: nowrap;
+	margin-top: 5px;
+	position: relative;
+}
+div.Table tr.headers div.filter input, table.Table tr.headers div.filter select {
+	border: 1px solid #D9D9D9;
+	font-size: 10px;
+	padding: 0;
+}
+div.Table tr.headers div.filter input {
+	padding: 0 3px;
+	width: 70px;
+	vertical-align: middle;
+}
+div.Table tr.headers div.filter option {
+	font-size: 10px;
+	vertical-align: middle;
+}
+div.Table tr.headers div.filter input:hover {
+	color: #404040;
+	background: #F8F8F8;
+}
+div.Table tr.headers div.filter input:focus {
+	color: #404040;
+	border: 1px solid #FFCC66;
+	background: #F8F8F8;
+}
+div.Table tr.headers div.filter a.clear {
+	text-decoration: none;
+	background: url(../img/clear_but.gif) 0 0 no-repeat;
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	margin: 0;
+	padding: 0;
+	margin-left: 3px;
+	overflow: hidden;
+	vertical-align: middle;
+	font-size: 0; /* do not display text */
+	text-indent: -5000px;
+}
+div.Table tr.headers div.filter a.clear:hover {
+	background-image: url(../img/clear_but_h.gif);
+}
+div.Table th {
+	/*font-weight: bold;*/
+	padding:5px 5px;
+	/*border-bottom: 1px solid #D9D9D9;
+	border-top: 1px solid #FFFFFF;*/
+}
+div.Table th a,
+div.Table div.navigation a {
+	text-decoration: underline !important;
+	font-weight: bold;
+}
+div.Table th a:hover,
+div.Table div.navigation a:hover {
+	color:#FFCC66;
+}
+div.Table tr.headers a, .Table tr.headers a:visited {
+	padding-right: 10px;
+}
+div.Table tr.headers th.sortedasc a {
+	color: #FFCC66;
+	background:url("../img/sort_down.gif") right center no-repeat;
+}
+div.Table tr.headers th.sorteddesc a {
+	color: #FFCC66;
+	background:url("../img/sort_up.gif") right center no-repeat;
+}
+/* body */
+div.Table tbody td {
+	border-bottom: 1px solid #D9D9D9;
+	border-top: 1px solid #FFFFFF;
+	padding:5px 5px;
+}
+div.Table tbody tr.even {
+	background:#EFEFEF;
+}
+/* paragraph mode: title style */
+div.Table span.title {
+	font-size: 80%;
+	color: #777777;
+}
+/* details */
+div.Table td.Details a {
+	display: block;
+	font-size: 0; /* do not display text */
+	text-indent: -5000px;
+	width: 9px;
+	height: 9px;
+	background: url("../img/TreeAnchor_P.gif") center center no-repeat;
+}
+div.Table td.Details a.Expanded {
+	background-image: url("../img/TreeAnchor_M.gif");
+}
+div.Table tr.Details  {
+	font-size: 80%;
+}
+div.Table tr.Details td.Details {
+	background-color: #FFFFFF;
+/*	background: url("../img/Tree_V.gif") left top repeat-y;*/
+}
+
+
+/* ========================= */
+/* Style de Table par d�faut */
+/* ========================= */
+
+div.Table2 {
+	/*background-color: #E8E8E8;*/
+	color: #999999;
+	margin-top: 5px;
+	margin-left : 400px;
+	margin-right: 5px;
+	margin-bottom : 5px;
+	width: 25%;
+	border-top: 1px solid #D9D9D9;
+	border-left : 1px solid #D9D9D9;
+	border-right : 1px solid #D9D9D9;
+	
+	
+}
+div.Table table {
+	background-color: #FFFFFF;
+	border-collapse:collapse;
+	padding: 0;
+	width: 100%;
+	margin-top: 1px;
+}
+/* Title */
+div.Table .Title {
+	color:#999999;
+	text-transform:uppercase;
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 125%;
+	padding: 0px 8px 0px 8px;
+	text-align: left;
+	font-style: italic;
+}
+
+/* Sous Titre */
+div.Table .sousTitre {
+	color:#888888;
+	text-transform:uppercase;
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 100%;
+	padding: 0px 8px 0px 8px;
+	text-align: left;
+	font-style: italic;
+}
+/* navigation bar */
+div.Table div.navigation {
+	/* clearing fix */
+	overflow: hidden;
+	_overflow: visible;
+	_height: 1%;
+	padding: 5px 10px;
+	border-bottom: 1px solid #D9D9D9;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+div.Table .range {
+	font-weight: italic;
+	float: left;
+	font-size: 80%;
+	/*font-color: #FFFFFF*/
+}
+div.Table .pagelinks {
+	font-weight: bold;
+	float: right;
+}
+div.Table .pagelinks * {
+	margin-left: 5px;
+}
+div.Table .pagelinks .prevd,
+div.Table .pagelinks .nextd
+{
+	color: #B4B4B4;
+}
+/* toolbar */
+div.Table div.toolbar {
+	padding: 5px 5px;
+	border-bottom: 1px solid #D9D9D9;
+}
+div.Table div.toolbar div.Buttons {
+	padding: 0;
+	margin: 0;
+	text-align: left;
+	display: block;
+	overflow: hidden;
+	float: none;
+}
+
+div.Table div.toolbar div.Buttons a, table.Table div.Buttons span {
+	font-size: 80%;
+	padding: 0px 3px;
+	margin: 0 2px;
+}
+/* headers */
+div.Table tr.headers th {
+	vertical-align: top;
+	/*border-bottom: 2px solid #D9D9D9;*/
+}
+div.Table tr.headers div.filter {
+	white-space: nowrap;
+	margin-top: 5px;
+	position: relative;
+}
+div.Table tr.headers div.filter input, table.Table tr.headers div.filter select {
+	border: 1px solid #D9D9D9;
+	font-size: 10px;
+	padding: 0;
+}
+div.Table tr.headers div.filter input {
+	padding: 0 3px;
+	width: 70px;
+	vertical-align: middle;
+}
+div.Table tr.headers div.filter option {
+	font-size: 10px;
+	vertical-align: middle;
+}
+div.Table tr.headers div.filter input:hover {
+	color: #404040;
+	background: #F8F8F8;
+}
+div.Table tr.headers div.filter input:focus {
+	color: #404040;
+	border: 1px solid #FFCC66;
+	background: #F8F8F8;
+}
+div.Table tr.headers div.filter a.clear {
+	text-decoration: none;
+	background: url(../img/clear_but.gif) 0 0 no-repeat;
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	margin: 0;
+	padding: 0;
+	margin-left: 3px;
+	overflow: hidden;
+	vertical-align: middle;
+	font-size: 0; /* do not display text */
+	text-indent: -5000px;
+}
+div.Table tr.headers div.filter a.clear:hover {
+	background-image: url(../img/clear_but_h.gif);
+}
+div.Table th {
+	/*font-weight: bold;*/
+	padding:5px 5px;
+	/*border-bottom: 1px solid #D9D9D9;
+	border-top: 1px solid #FFFFFF;*/
+}
+div.Table th a,
+div.Table div.navigation a {
+	text-decoration: underline !important;
+	font-weight: bold;
+}
+div.Table th a:hover,
+div.Table div.navigation a:hover {
+	color:#FFCC66;
+}
+div.Table tr.headers a, .Table tr.headers a:visited {
+	padding-right: 10px;
+}
+div.Table tr.headers th.sortedasc a {
+	color: #FFCC66;
+	background:url("../img/sort_down.gif") right center no-repeat;
+}
+div.Table tr.headers th.sorteddesc a {
+	color: #FFCC66;
+	background:url("../img/sort_up.gif") right center no-repeat;
+}
+/* body */
+div.Table tbody td {
+	border-bottom: 1px solid #D9D9D9;
+	border-top: 1px solid #FFFFFF;
+	padding:5px 5px;
+}
+div.Table tbody tr.even {
+	background:#EFEFEF;
+}
+/* paragraph mode: title style */
+div.Table span.title {
+	font-size: 80%;
+	color: #777777;
+}
+/* details */
+div.Table td.Details a {
+	display: block;
+	font-size: 0; /* do not display text */
+	text-indent: -5000px;
+	width: 9px;
+	height: 9px;
+	background: url("../img/TreeAnchor_P.gif") center center no-repeat;
+}
+div.Table td.Details a.Expanded {
+	background-image: url("../img/TreeAnchor_M.gif");
+}
+div.Table tr.Details  {
+	font-size: 80%;
+}
+div.Table tr.Details td.Details {
+	background-color: #FFFFFF;
+/*	background: url("../img/Tree_V.gif") left top repeat-y;*/
+}
+
+
+
+/* Surcharge du style Form dans DetailsView */
+/* ---------------------------------------- */
+div.Table td.DetailsView div.Form {
+/*	background-color: #FFFFFF;*/
+	color: #404040;
+	padding: 0;
+	maring: 0;
+}
+div.Table td.DetailsView div.Form fieldset {
+	margin: 0;
+	padding: 0;
+	margin-top: 10px;
+	border: 0;
+	background:url("../img/filets.jpg") left 0px repeat-x;
+}
+div.Table td.DetailsView div.Form legend {
+	color:#9D9D9D;
+	font-weight: bold;
+	font-size: 100%;
+	
+	text-transform:uppercase;
+	font-style: italic;
+	background:#FFFFFF;
+	margin-left: 50px;
+	padding: 0 8px;
+}
+
+div.Table td.DetailsView div.Form div.field {
+	border: none;
+	display: block;
+	width: 200px;
+	float: left;
+	padding: 3px 0;
+	overflow: visible;
+	background: none;
+}
+div.Table td.DetailsView div.Form label.field {
+	margin: 0;
+	padding: 0;
+	color: #404040;
+	font-weight: bold;
+	display:block;
+	width: 80px;
+	float:left;
+	text-align:right;
+}
+div.Table td.DetailsView div.Form div.input {
+	margin: 0;
+	padding: 0 0 0 5px;
+	display: block;
+	float: left;
+}
+
+/* ========================= */
+/* Style de Tree par d�faut */
+/* ========================= */
+div.Tree {
+	overflow: auto;
+	background-color:#F4F4F4;
+	border:1px solid #9D9D9D;
+	margin: 5px;
+	padding: 5px;
+	min-height: 300px;
+}
+/* pour FF: marge nulle entre le marker et le content (comme IE) */
+div.Tree li:before {
+	content: "";
+	margin-left: -7px;
+}
+div.Tree li {
+	position: relative;
+	overflow: hidden;
+	padding: 0 0 2px 0;
+	background: url("../img/Tree_V.gif") left top repeat-y;
+	display: list-item;
+	list-style-image: url("../img/Tree_L.gif");
+	list-style-position: inside;
+}
+div.Tree li.last {
+	position: relative;
+	background: none;
+}
+div.Tree a.anchor {
+	display: block;
+	position: absolute;
+	width: 9px;
+	height: 9px;
+	left: 3px;
+	top: 4px;
+	_left: -13px;
+	_top: 3px;
+	background: url("../img/TreeAnchor.gif") left top no-repeat;
+}
+div.Tree a.exp {
+	background-image: url("../img/TreeAnchor_M.gif");
+}
+div.Tree a.coll {
+	background-image: url("../img/TreeAnchor_P.gif");
+}
+div.Tree li ul {
+	margin-left: 20px;
+}
+div.Tree div.loading {
+	display: block;
+/*	position: absolute;*/
+	width: 16px;
+	height: 16px;
+	margin-left: 25px;
+	background: url("../img/loading.gif") left top no-repeat;
+}
+div.Tree li img {
+	vertical-align: middle;
+	margin: 0;
+}
+div.Tree li .label {
+	padding: 0px 2px;
+	vertical-align: middle;
+}
+/* ================================ */
+/* Style de Autocomplete par d�faut */
+/* ================================ */
+div.Popup {
+	position: absolute;
+	z-index: 100;
+	overflow-x: visible;
+	overflow-y: auto;
+	background-color: lightyellow;
+	border: 1px outset black;
+	text-align: left;
+}
+div.Popup li {
+	position: relative;
+	display: block;
+	padding: 0 4px;
+	font-size: 10px;
+	white-space: nowrap;
+	cursor: default;
+}
+div.Popup li.Loading {
+	display: block;
+	width: 16px;
+	height: 16px;
+	margin-left: 4px;
+	background: url("../img/loading.gif") left top no-repeat;
+}
+
+div.Popup li.Selected {
+	background-color: #CCCCCC;
+}
+div.Popup li:hover {
+	background-color: #DDDDDD;
+}
+
+.legend
+{
+	color:#000000; 
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 125%;
+	
+	text-transform:uppercase;
+	font-style: italic;
+	background:#FFFFFF;
+	margin-left: 0px;
+	padding: 0px 8px 0px 8px;
+	
+}
+
+.legend2
+{
+	color:#000000; 
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 90%;
+	
+	text-transform:uppercase;
+	font-style: italic;
+	background:#FFFFFF;
+	margin-left: 0px;
+	padding: 0px 8px 0px 8px;
+}
+
+.legend3
+{
+	color:#000000; 
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 100%;
+	text-transform:uppercase;
+	font-style: normal;
+	background:#FFFFFF;
+	margin-left: 0px;
+	padding: 0px 8px 0px 8px;
+}
+
+div.Table .titleTable
+{
+	color:#FFCC66;
+	text-transform:uppercase;
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 125%;
+	padding: 0px 8px 0px 8px;
+	text-align: left;
+	font-style: italic;
+}
+
+div.Table .sousTitleTable 
+{
+	color:#000000;
+	text-transform:uppercase;
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 100%;
+	padding: 0px 8px 0px 8px;
+	text-align: left;
+	/*font-style: italic;*/
+		
+}
+
+div.Table .totalTable{
+ 	color:#000000;
+	text-transform:uppercase;
+	font-weight: bold;
+	/*font-size: 11px;*/
+	font-size: 120%;
+	padding: 0px 8px 0px 8px;
+	text-align: left;
+	font-style: italic;	
+}
+div.Table .sousTotalTable
+{
+	color:#000000;
+	text-transform:uppercase;
+	/*font-weight: bold;*/
+	/*font-size: 11px;*/
+	font-size: 80%;
+	padding: 0px 8px 0px 8px;
+	text-align: left;
+	font-style: italic;
+	}
+	
+div.Table .valeurTable  
+{
+	color:#000000;
+	text-transform:uppercase;
+	/*font-weight: bold;*/
+	/*font-size: 11px;*/
+	font-size: 80%;
+	padding: 0px 8px 0px 8px;
+	text-align: left;
+	/*font-style: italic;*/
+	}

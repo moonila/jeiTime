@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base:html.layout.Div xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Visible>${affecterBean.voirRecap} </Visible>
+	<base:html.table.Table ID="tableTache">
+		<RowsData> ${affecterBean.listRecapAffect} </RowsData>
+		<Toolbar>
+			<base:html.menu.Button>
+				<Title>${message("retour_page_prec.title")}</Title>
+				<OnClick>
+					<base:action.DoAndForward>
+						<Do>${affecterBean.loadAllEquipe()}</Do>
+						<Forwards>
+							<base:action.Case Name="success">
+								<base:action.ReloadThisPage/>
+							</base:action.Case>
+						</Forwards>
+					</base:action.DoAndForward>
+				</OnClick>
+				<Visible>${request.isUserInRole("administrateur")}</Visible>
+			</base:html.menu.Button>
+			<base:html.menu.Button>
+				<Title>${message("valider.title")}</Title>
+				<OnClick>
+					<base:action.DoAndForward>
+						<Do>${affecterBean.create(affecterBean.listRecapAffect)}</Do>
+						<Forwards>
+							<base:action.Case Name="success">
+								<base:action.RestoreViewPoint
+									ParamName="fromUrl" />
+							</base:action.Case>
+						</Forwards>
+					</base:action.DoAndForward>
+				</OnClick>
+				<Visible>${request.isUserInRole("administrateur")}</Visible>
+			</base:html.menu.Button>
+		</Toolbar>
+		<Columns>
+			<base:html.table.TextColumn>
+				<Title>${message("collaborateur_general.title")}</Title>
+				<Text> ${$row.Collaborateur.prenomColl}
+					${$row.Collaborateur.nomColl}</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("tache.title")} </Title>
+				<Text> ${$row.Tache.nomtache.nomTache}</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("groupe_tache.title")}</Title>
+				<Text>${$row.Tache.nomtache.typeTache.nomTypTach}</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("detacher.title")}</Title>
+				<Text>Détacher</Text>
+				<OnClick>
+					<base:action.DoAndForward>
+						<AddParameters>
+							<base:param.DynParam Name="id">
+								<Value> ${$row.Collaborateur.idColl}</Value>
+							</base:param.DynParam>
+						</AddParameters>
+						<Do>${affecterBean.deselectColl(request)}</Do>
+						<Forwards>
+							<base:action.Case Name="default">
+								<base:action.ReloadThisPage></base:action.ReloadThisPage>
+							</base:action.Case>
+						</Forwards>
+					</base:action.DoAndForward>
+				</OnClick>
+			</base:html.table.TextColumn>
+		</Columns>
+	</base:html.table.Table>
+	
+</base:html.layout.Div>

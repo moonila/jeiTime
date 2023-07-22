@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") ||
+				request.isUserInRole("chef_de_projet") ||
+				request.isUserInRole("gestionnaire")}</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${affecterBean.loadAllProjets()}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+
+	<Title>${message("affecter_ressource_choisir_projet.title")}</Title>
+
+	<base:html.HTML>
+		<Code><![CDATA[
+					<br/><div class=legend>Veuillez choisir un projet</div>
+				]]></Code>
+	</base:html.HTML>
+
+	<base:html.form.EditForm ID="main">
+		<Items>
+			<base:html.form.field.SingleChoiceField
+				Type="ComboBox">
+				<Label>${message("nom_projet.label")}</Label>
+				<Bind>${affecterBean.idProjet}</Bind>
+				<Items>
+					<base:html.item.DynamicItems>
+						<IterateOn>
+							${affecterBean.allprojet}
+						</IterateOn>
+						<Value>${$item.idProjet}</Value>
+						<Text>${$item.nomProjet}</Text>
+					</base:html.item.DynamicItems>
+				</Items>
+			</base:html.form.field.SingleChoiceField>
+		</Items>
+		<SubmitButtonLabel>
+			${message("suivant.bouton")}
+		</SubmitButtonLabel>
+		<OnSubmit>
+			<base:action.ShowPage Page="/pages/Affectation/AffectRessourceTache">
+				<Parameters>
+					<base:param.ViewPointParam Name="fromUrl" />
+				</Parameters>
+			</base:action.ShowPage>
+		</OnSubmit>
+	</base:html.form.EditForm>
+</base:page.Composite>

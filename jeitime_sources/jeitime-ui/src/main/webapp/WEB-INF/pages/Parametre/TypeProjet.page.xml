@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur")}</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${typeProjetBean.load()}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("gestion_types_projets.title")}</Title>
+	<base:html.layout.Div>
+		<Visible>${typeProjetBean.selected == null}</Visible>
+		<base:html.form.EditForm ID="create">
+			<Items>
+				<base:html.form.Section>
+					<Title>${message("new_type_projet.title")} </Title>
+					<base:html.form.field.TextField
+						Cols="30">
+						<Label>${message("nom_type_projet_ob.label")} </Label>
+						<Bind>${typeProjetBean.nomTypeProjet}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+				</base:html.form.Section>
+			</Items>
+			<SubmitButtonLabel>
+			${message("creer.bouton")}
+			</SubmitButtonLabel>
+			<OnSubmit>
+				<base:action.DoAndForward>
+					<Do>${typeProjetBean.create()} </Do>
+					<Forwards>
+						<base:action.Case Name="success">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnSubmit>
+		</base:html.form.EditForm>
+	</base:html.layout.Div>
+	<base:html.layout.Div>
+		<Visible>${typeProjetBean.selected != null}</Visible>
+		<base:html.form.EditForm ID="update">
+			<Items>
+				<base:html.form.Section>
+					<Title>${message("modif_type_projet.title")} </Title>
+
+					<base:html.form.field.TextField
+						Cols="30">
+						<Label>${message("nom_type_projet.label")}</Label>
+						<Bind>${typeProjetBean.selected.nomTypePro}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+				</base:html.form.Section>
+			</Items>
+			<SubmitButtonLabel>
+			${message("modifier.bouton")}
+			</SubmitButtonLabel>
+			<OnSubmit>
+				<base:action.DoAndForward>
+					<Do>${typeProjetBean.update()} </Do>
+					<Forwards>
+						<base:action.Case Name="success">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnSubmit>
+			<OnCancel>
+				<base:action.DoAndForward>
+					<Do>${typeProjetBean.cancel()}</Do>
+					<Forwards>
+						<base:action.Case Name="success">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnCancel>
+		</base:html.form.EditForm>
+	</base:html.layout.Div>
+	<base:html.form.ViewForm ID="liste">
+		<Items>
+			<base:html.form.Section>
+				<Title>${message("liste_type_projet.title")}</Title>
+				<base:html.form.field.TableField
+					Name="liste">
+					<base:html.table.Table ID="tableDom">
+						<RowsData> ${typeProjetBean.allTypProj} </RowsData>
+						<Columns>
+							<base:html.table.TextColumn>
+								<Title> ${message("nom_type_projet.title")}</Title>
+								<Text> ${$row.nomTypePro}</Text>
+								<OnClick>
+									<base:action.DoAndForward>
+										<AddParameters>
+											<base:param.DynParam Name="ID">
+												<Value>	${$row.idTypeProj}</Value>
+											</base:param.DynParam>
+										</AddParameters>
+										<Do>${typeProjetBean.select(request)} </Do>
+										<Forwards>
+											<base:action.Case Name="DEFAULT">
+												<base:action.ReloadThisPage></base:action.ReloadThisPage>
+											</base:action.Case>
+										</Forwards>
+									</base:action.DoAndForward>
+								</OnClick>
+							</base:html.table.TextColumn>
+							<base:html.table.TextColumn>
+								<Title>${message("Suppr.title")}</Title>
+								<Text>supprimer</Text>
+								<OnClick>
+									<base:action.SwitchAction>
+										<Switch>${typeProjetBean.isInProject($row.idTypeProj)}</Switch>
+										<Cases>
+											<base:action.Case Name="false">
+												<base:action.Ask Buttons="YesNo">
+													<AddParameters>
+														<base:param.DynParam Name="ID">
+															<Value>	${$row.idTypeProj}</Value>
+														</base:param.DynParam>
+													</AddParameters>
+													<Title>${message("conf.title")}</Title>
+													<Message>${message("conf_suppr_type_projet.message")}</Message>
+													<OnYes>
+														<base:action.DoAndForward>
+															<Do>${typeProjetBean.delete(request)} </Do>
+															<Forwards>
+																<base:action.Case Name="default">
+																	<base:action.ReloadThisPage></base:action.ReloadThisPage>
+																</base:action.Case>
+															</Forwards>
+														</base:action.DoAndForward>
+													</OnYes>
+													<OnNo>
+														<base:action.ReloadThisPage></base:action.ReloadThisPage>
+													</OnNo>
+												</base:action.Ask>
+											</base:action.Case>
+										</Cases>
+									</base:action.SwitchAction>
+								</OnClick>
+							</base:html.table.TextColumn>
+						</Columns>
+					</base:html.table.Table>
+				</base:html.form.field.TableField>
+			</base:html.form.Section>
+		</Items>
+	</base:html.form.ViewForm>
+</base:page.Composite>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <base:Application HomePage="Accueil" xmlns:base="org.ow2.opensuit.xml.base" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="org.ow2.opensuit.xml.base 
+	base.xsd "> -->
+<base:Application xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:spring="xmlmap://org.ow2.opensuit.xml.spring/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	HomePage="/pages/Accueil" xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.spring/v1.0 spring.xsd">
+	<SupportedLocales>
+		<base:locale.LocaleConfig Language="en" />
+		<base:locale.LocaleConfig DateOutputFormat="dd/MM/yyyy"
+			Language="fr" />
+	</SupportedLocales>
+	<LocaleSelector>
+		<base:locale.Fixed Language="fr" />
+	</LocaleSelector>
+	<MessagesProviders>
+		<base:msg.ResourceBundle
+			BaseName="org.jeinnov.jeitime.ui.messages.JEITimeMessageRessources"
+			Name="default" />
+	</MessagesProviders>
+
+	<GlobalBeans>
+		<base:binding.JavaBeans>
+			<base:binding.Bean Name="userConfig"
+				Class="org.jeinnov.jeitime.utils.UserConfig" LifeScope="Session" />
+				
+			<!-- Bean pour l'affectation des ressources	-->
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.affecter.AffecterUIBean"
+				LifeScope="PageContext" Name="affecterBean" />
+			
+			<!-- Bean pour les alertes	-->
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.alerte.AlerteUIBean"
+				LifeScope="PageContext" Name="alerteBean" />
+			
+			<!-- Beans pour les tableaux de bilans	-->
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.bilan.RecapDomUIBean"
+				LifeScope="PageContext" Name="recapBeanDom" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.bilan.RecapThemaUIBean"
+				LifeScope="PageContext" Name="recapBeanThema" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.bilan.RecapProjetUIBean"
+				LifeScope="PageContext" Name="recapTousProjets" />
+			<base:binding.Bean
+				Class="org.jeinnov.jeitime.ui.bilan.RecapProjetMensuelUIBean"
+				LifeScope="PageContext" Name="recapProjetMensuel" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.bilan.RecapTypePUIBean"
+				LifeScope="PageContext" Name="recapBeanTypeProjet" />
+			<base:binding.Bean
+				Class="org.jeinnov.jeitime.ui.bilan.RecapSuiviProjetUIBean"
+				LifeScope="PageContext" Name="recapProjet" />
+				
+			<!-- Beans concernant les collaborateurs -->
+			<base:binding.Bean
+				Class="org.jeinnov.jeitime.ui.collaborateur.CollaborateurUiBean"
+				LifeScope="PageContext" Name="collaborateurBean" />
+			<base:binding.Bean
+				Class="org.jeinnov.jeitime.ui.collaborateur.CollegeUIBean"
+				LifeScope="PageContext" Name="collegeBean" />
+			<base:binding.Bean
+				Class="org.jeinnov.jeitime.ui.collaborateur.EquipeUIBean" LifeScope="PageContext"
+				Name="equipeBean" />
+			
+			<!-- Bean pour le nettoyage des informations de la base de données	-->
+			<base:binding.Bean
+				Class="org.jeinnov.jeitime.ui.gestionBase.NettoyerBaseBean"
+				LifeScope="PageContext" Name="nettoyage" />
+			
+			<!-- Beans concernant les paramètres d'un projet	-->
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.ClientPartUIBean"
+				LifeScope="PageContext" Name="clientPartBean" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.DomaineUIBean"
+				LifeScope="PageContext" Name="domaineBean" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.NomTacheUIBean"
+				LifeScope="PageContext" Name="nomtacheBean" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.ThematiqueUIBean"
+				LifeScope="PageContext" Name="themaBean" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.TypeProjetUIBean"
+				LifeScope="PageContext" Name="typeProjetBean" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.TypeTacheUIBean"
+				LifeScope="PageContext" Name="typeTacheBean" />
+				
+			<!-- Beans concernant les projets	-->
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.ListsProjetUIBean"
+				LifeScope="PageContext" Name="listProjetBean" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.ConsultProjetBean"
+				LifeScope="PageContext" Name="consultProjetBean" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.ProjetUIBean"
+				LifeScope="PageContext" Name="projetBean" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.projet.TacheUIBean"
+				LifeScope="PageContext" Name="tacheBean" />
+				
+			<!-- Beans concernant la saisie des heures et la consultation des tableau de bord -->
+			<base:binding.Bean
+				Class="org.jeinnov.jeitime.ui.heure.ConsultMensCollabUIBean"
+				LifeScope="PageContext" Name="consultMensCollab" />
+			<base:binding.Bean
+				Class="org.jeinnov.jeitime.ui.heure.ConsultationMensuelleUIBean"
+				LifeScope="PageContext" Name="consultMens" />
+			<base:binding.Bean Class="org.jeinnov.jeitime.ui.heure.SaisieHeureUIBean"
+				LifeScope="PageContext" Name="saisieHeureBean" />
+		</base:binding.JavaBeans>
+	</GlobalBeans>
+	<Frames>
+		<base:Import_html.IFrame File="frame/frame.xml" />
+	</Frames>
+</base:Application>

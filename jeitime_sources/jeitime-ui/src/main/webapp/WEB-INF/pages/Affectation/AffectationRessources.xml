@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base:html.layout.Div xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Visible>${affecterBean.voirCollab} </Visible>
+	<base:html.form.EditForm ID="main">
+		<Items>
+			<base:html.form.field.SingleChoiceField
+				Type="ComboBox">
+				<Label>${message("nom_equipe.label")} : </Label>
+				<Bind>${affecterBean.idEq}</Bind>
+				<Items>
+					<base:html.item.DynamicItems>
+						<IterateOn>
+							${affecterBean.allequipe}  
+						</IterateOn>
+						<Value>${$item.idEquip}</Value>
+						<Text>${$item.nomEquip}</Text>
+					</base:html.item.DynamicItems>
+				</Items>
+				<OnChange>${affecterBean.selectCollaborateur(affecterBean.idEq)}
+				</OnChange>
+			</base:html.form.field.SingleChoiceField>
+		</Items>
+	</base:html.form.EditForm>
+		<base:html.table.Table ID="recapEquipe">
+			<Title>${message("liste_collabo_membre.title")}</Title>
+			<RowsData>${affecterBean.allCollabEquip}</RowsData>
+			<Selection>
+				<base:html.table.SelectionBindings>
+					<RowID>${$row.idColl}</RowID>
+					<SelectedIDs>${affecterBean.selectedColl}</SelectedIDs>
+				</base:html.table.SelectionBindings>
+			</Selection>
+			<Toolbar>
+				<base:html.menu.Button>
+					<Title>${message("tout_selectionner.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${affecterBean.selectAllColl(affecterBean.idEq)} </Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage></base:action.ReloadThisPage>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title>${message("tout_deselectionner.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${affecterBean.deSelectAllColl ()} </Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage/>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title>${message("retour_page_prec.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${affecterBean.loadAllTache(request)} </Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage/>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title>${message("valider.title")}</Title>
+					<OnClick>
+						<base:action.DoAndForward>
+							<Do>${affecterBean.voirTableauRecap()} </Do>
+							<Forwards>
+								<base:action.Case Name="success">
+									<base:action.ReloadThisPage/>
+								</base:action.Case>
+							</Forwards>
+						</base:action.DoAndForward>
+					</OnClick>
+				</base:html.menu.Button>
+			</Toolbar>
+			<Columns>
+				<base:html.table.TextColumn>
+					<Title> ${message("nom_collabo.title")} :  </Title>
+					<Sort>
+						<base:html.table.NativeSorter />
+					</Sort>
+					<CellValue>${$row.idColl}</CellValue>
+					<Text>${$row.prenomColl} ${$row.nomColl}</Text>
+				</base:html.table.TextColumn>
+			</Columns>
+		</base:html.table.Table>
+</base:html.layout.Div>

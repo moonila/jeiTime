@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base:html.Frame xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="default"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base /WEB-INF/base.xsd utils /WEB-INF/JEITime.xsd">
+	<StyleSheets>
+<base:html.CssStyleSheet File="resources/css/jeitimeCSS.css" />
+	</StyleSheets>
+
+	<base:html.layout.Div ID="header">
+		<base:html.HTML>
+			<Code>		       
+			    	</Code>
+		</base:html.HTML>
+	</base:html.layout.Div>
+	<base:html.menu.Menu CssClass="HeaderMenu">
+	<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("gestionnaire") || request.isUserInRole("chef_de_projet") || request.isUserInRole("collaborateur")}</Visible>
+		<Items>
+			<base:html.menu.Button>
+				<Title>${userConfig.identity}</Title>
+				<Icon>resources/icons/users.gif</Icon>
+				<OnClick>
+					<base:action.SwitchAction>
+						<Switch>${empty userConfig.collab}</Switch>
+						<Cases>
+							<base:action.Case Name="false">
+								<base:action.ShowPage Page="/pages/Collaborateur/ConsultUtilisateur">
+									<Parameters>
+										<base:param.DynParam Name="id">
+											<Value>${userConfig.collab.idColl}</Value>
+										</base:param.DynParam>
+									</Parameters>
+								</base:action.ShowPage>
+							</base:action.Case>
+						</Cases>
+					</base:action.SwitchAction>
+				</OnClick>
+			</base:html.menu.Button>
+			<base:html.menu.Button>
+				<Title>${message("deconnexion.title")}</Title>
+				<OnClick>
+					<base:action.DoAndForward>
+						<Do>${userConfig.disconnect(request)}</Do>
+						<Forwards>
+							<base:action.Case Name="default">
+								<base:action.ShowPage Page="/pages/Accueil"></base:action.ShowPage>
+							</base:action.Case>
+						</Forwards>
+					</base:action.DoAndForward>
+				</OnClick>
+			</base:html.menu.Button>
+		</Items>
+	</base:html.menu.Menu>
+	<base:html.layout.Div ID="sidebar">
+		<base:html.menu.Menu>
+			<Title>${message("gestion_heures.title")}</Title>
+			<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("gestionnaire") || request.isUserInRole("chef_de_projet") || request.isUserInRole("collaborateur")} </Visible>
+			<Items>
+				<base:html.menu.Button>
+					<Title>${message("saisies_heures.title")}</Title>
+					<OnClick>
+						<base:action.ShowPage Page="/pages/SaisieHeure/SaisieHeure" />
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.SubMenu>
+					<Title>${message("consulter_tableaux_bord.title")}</Title>
+					<Items>
+						<base:html.menu.Button>
+							<Title>${message("tableau_bord_hebdo.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/SaisieHeure/ConsultHeureSaisie" />
+							</OnClick>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("tableau_bord_mensuel.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/SaisieHeure/ConsultationMensuelle" />
+							</OnClick>
+						</base:html.menu.Button>
+					</Items>
+				</base:html.menu.SubMenu>
+			</Items>
+		</base:html.menu.Menu>
+		<base:html.menu.Menu>
+			<Title>${message("config_jei.title")}</Title>
+			<Visible>${request.isUserInRole("administrateur")}</Visible>
+			<Items>
+				<base:html.menu.SubMenu>
+					<Title>${message("parametrage.title")}</Title>
+					<Items>
+						<base:html.menu.Button>
+							<Title>${message("gestion_domaines.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Parametre/DomaineProjet"></base:action.ShowPage>
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title> ${message("gestion_them.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Parametre/Thematique"></base:action.ShowPage>
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("gestion_types_projets.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Parametre/TypeProjet"></base:action.ShowPage>
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Separator />
+						<base:html.menu.Button>
+							<Title> ${message("gestion_groupes_taches.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Parametre/TypeTache"></base:action.ShowPage>
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title> ${message("gestion_types_taches.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Parametre/GestTache"></base:action.ShowPage>
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Separator />
+						<base:html.menu.Button>
+							<Title> ${message("gestion_clients.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Parametre/ClientPart"></base:action.ShowPage>
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur")}</Visible>
+						</base:html.menu.Button>
+					</Items>
+				</base:html.menu.SubMenu>
+				<base:html.menu.Button>
+					<Title>${message("nettoyage_saisies.title")}</Title>
+					<OnClick>
+						<base:action.ShowPage Page="/pages/GestionBase/NettoyerBase" />
+					</OnClick>
+				</base:html.menu.Button>
+			</Items>
+		</base:html.menu.Menu>
+		<base:html.menu.Menu>
+			<Title>${message("gestion_projet.title")}</Title>
+			<Visible>${request.isUserInRole("administrateur")|| request.isUserInRole("chef_de_projet")}</Visible>
+			<Items>
+				<base:html.menu.SubMenu>
+					<Title>${message("gestion_projet.title")}</Title>
+					<Items>
+						<base:html.menu.Button>
+							<Title>${message("crea_projet.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Projet/CreationProjet"></base:action.ShowPage>
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("consult_projet.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Projet/ChoiProjet" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet") || request.isUserInRole("gestionnaire")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("suivi_projet.title")} </Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Projet/SuiviProjet" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet") || request.isUserInRole("gestionnaire")}</Visible>
+						</base:html.menu.Button>
+					</Items>
+				</base:html.menu.SubMenu>
+				<base:html.menu.Button>
+					<Title>${message("affecter_ressources.title")}</Title>
+					<OnClick>
+						<base:action.ShowPage Page="/pages/Affectation/AffectRessource" />
+					</OnClick>
+					<Visible>${request.isUserInRole("administrateur")}</Visible>
+				</base:html.menu.Button>
+				<base:html.menu.SubMenu>
+					<Title> ${message("clot_ferm_projet.title")} </Title>
+					<Items>
+						<base:html.menu.Button>
+							<Title>${message("cloture_projet.title")} </Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Projet/ListProjetNonCloture" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") }</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("fermer_projet.title")} </Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Projet/ListProjetNonFerme" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Separator />
+						<base:html.menu.Button>
+							<Title>${message("liste_projet_cloture.title")} </Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Projet/ListProjetCloture" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") }</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("list_projet_ferme.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Projet/ListProjetFerme" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet")}</Visible>
+						</base:html.menu.Button>
+					</Items>
+				</base:html.menu.SubMenu>
+			</Items>
+		</base:html.menu.Menu>
+		<base:html.menu.Menu>
+			<Title>${message("gestions_ressources.title")}</Title>
+			<Visible>${request.isUserInRole("administrateur")|| request.isUserInRole("chef_de_projet")||request.isUserInRole("gestionnaire")}</Visible>
+			<Items>
+				<base:html.menu.Button>
+					<Title>${message("gestion_equipe.title")}</Title>
+					<OnClick>
+						<base:action.ShowPage Page="/pages/Collaborateur/Equipe" />
+					</OnClick>
+					<Visible>${request.isUserInRole("administrateur")}</Visible>
+				</base:html.menu.Button>
+				<base:html.menu.SubMenu>
+					<Title>${message("gestion_util.title")}</Title>
+					<Items>
+						<base:html.menu.Button>
+							<Title>${message("creer_util.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Collaborateur/CreerCollaborateur" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("consulter_util.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Collaborateur/ChoixUtili" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur")|| request.isUserInRole("chef_de_projet")||request.isUserInRole("gestionnaire")}</Visible>
+						</base:html.menu.Button>
+					</Items>
+				</base:html.menu.SubMenu>
+				<base:html.menu.Button>
+					<Title>${message("repartition_temps.title")}</Title>
+					<OnClick>
+						<base:action.ShowPage Page="/pages/Collaborateur/College" />
+					</OnClick>
+					<Visible>${request.isUserInRole("administrateur")}</Visible>
+				</base:html.menu.Button>
+			</Items>
+		</base:html.menu.Menu>
+		<base:html.menu.Menu>
+			<Title>${message("suivi_temps.title")}</Title>
+			<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("gestionnaire")}</Visible>
+			<Items>
+				<base:html.menu.SubMenu>
+					<Title>${message("projets.title")}</Title>
+					<Items>
+						<base:html.menu.Button>
+							<Title>Suivi Mensuel</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Bilan/SuiviProjetsMensuels" />
+							</OnClick>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("suivi_periode.title")} </Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Bilan/RecapTousProjets"></base:action.ShowPage>
+							</OnClick>
+						</base:html.menu.Button>
+						<base:html.menu.Separator />
+						<base:html.menu.Button>
+							<Title>${message("types_projet_periode.title")} </Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Bilan/TableauRecapTypeProjet"></base:action.ShowPage>
+							</OnClick>
+						</base:html.menu.Button>
+						<base:html.menu.Separator />
+						<base:html.menu.Button>
+							<Title>${message("thematique_periode.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Bilan/RecapThema"></base:action.ShowPage>
+							</OnClick>
+						</base:html.menu.Button>
+						<base:html.menu.Separator />
+						<base:html.menu.Button>
+							<Title>${message("domaine_periode.title")} </Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Bilan/RecapDom"></base:action.ShowPage>
+							</OnClick>
+						</base:html.menu.Button>
+					</Items>
+				</base:html.menu.SubMenu>
+				<base:html.menu.SubMenu>
+					<Title>${message("collabo.title")}</Title>
+					<Items>
+						<base:html.menu.Button>
+							<Title>${message("saisir_modifier_heures.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/SaisieHeure/ConsultCollabHeure" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Separator />
+						<base:html.menu.Button>
+							<Title>${message("consulter_bord_hebdo.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/SaisieHeure/ConsultCollabHebdo" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet")}</Visible>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("consulter_bord_mensuel.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/SaisieHeure/ConsultationMensuelleCollaborateur" />
+							</OnClick>
+							<Visible>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet")}</Visible>
+						</base:html.menu.Button>
+					</Items>
+				</base:html.menu.SubMenu>
+				<base:html.menu.SubMenu>
+					<Title>${message("consult_alertes.title")}</Title>
+					<Items>
+						<base:html.menu.Button>
+							<Title>${message("consult_alertes_annuelles.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Alerte/AlertesAnnuelles" />
+							</OnClick>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("consult_alertes_mensuel.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Alerte/AlertesMensuelles" />
+							</OnClick>
+						</base:html.menu.Button>
+						<base:html.menu.Button>
+							<Title>${message("consult_alertes_hebdo.title")}</Title>
+							<OnClick>
+								<base:action.ShowPage Page="/pages/Alerte/AlertesHebdomadaires" />
+							</OnClick>
+						</base:html.menu.Button>
+					</Items>
+				</base:html.menu.SubMenu>
+			</Items>
+		</base:html.menu.Menu>
+	</base:html.layout.Div>
+	<base:html.PageContainer />
+	<base:html.layout.Div ID="footer">
+		<base:html.HTML>
+			<Code>
+	        <![CDATA[Créé et développé par JEInnov (version 1.5)]]>
+	      </Code>
+		</base:html.HTML>
+	</base:html.layout.Div>
+</base:html.Frame>

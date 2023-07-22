@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition Extends="/pages/Parametre/TypeTacheModif">
+			<Authorization>${request.isUserInRole("administrateur") }</Authorization>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("ajouter_type_tache.title")}</Title>
+
+	<base:html.HTML>
+		<Code><![CDATA[
+			<div class=legend2><br/><br/> Ajouter un Type de Tâche à : ${typeTacheBean.nomTypTach} </div>
+			]]></Code>
+	</base:html.HTML>
+	<base:html.form.EditForm ID="listTTache">
+		<Items>
+			<base:html.form.field.TextField>
+				<Label>${message("nom_tache.label")}</Label>
+				<Bind>${typeTacheBean.nomTache}</Bind>
+			</base:html.form.field.TextField>
+		</Items>
+		<SubmitButtonLabel>
+			${message("ajourt_tache.bouton")}   
+		</SubmitButtonLabel>
+		<OnSubmit>
+			<base:action.DoAndForward>
+				<Do>${typeTacheBean.ajouter()}</Do>
+				<Forwards>
+					<base:action.Case Name="success">
+							<base:action.RestoreViewPoint
+								ParamName="previousUrl" />
+					</base:action.Case>
+				</Forwards>
+			</base:action.DoAndForward>
+		</OnSubmit>
+		<OnCancel>
+			<base:action.RestoreViewPoint
+								ParamName="previousUrl" />
+		</OnCancel>
+	</base:html.form.EditForm>
+</base:page.Composite>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jeitime-export="org.jeinnov.jeitime.utils"
+	xsi:schemaLocation="org.ow2.opensuit.xml.base ../../base.xsd ../utils ../../JEITime.xsd">
+	<Context>
+		<base:page.ctx.Definition Extends="/pages/Projet/SuiviProjet">
+			<Authorization>${request.isUserInRole("administrateur") || request.isUserInRole("gestionnaire")}</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${recapProjet.load()}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+
+	<Title>${message("tableau_suivi_projet.title")}</Title>
+
+	<!--
+		******************************** * Affichage du tableau * *
+		récapitulatif par projet * ************************************
+	-->
+	<base:html.layout.Div>
+		<base:html.table.Table ID="recap">
+			<Title>${message("tableaux_recap_collab_projet.title")}</Title>
+			<RowsData>${recapProjet.items}</RowsData>
+			<Toolbar>
+				<base:html.menu.Button>
+					<Title> ${message("export.title")} </Title>
+					<OnClick>
+						<base:html.table.export.ExportTableData>
+							<Format>
+								<jeitime-export:CSVExport Separator=";" />
+							</Format>
+						</base:html.table.export.ExportTableData>
+					</OnClick>
+				</base:html.menu.Button>
+				<base:html.menu.Button>
+					<Title>${message("retour_page_prec.title")}</Title>
+					<OnClick>
+						<base:action.ShowPage Page="/pages/Projet/SuiviProjet"></base:action.ShowPage>
+					</OnClick>
+					<Visible>${request.isUserInRole("administrateur")|| request.isUserInRole("gestionnaire")}</Visible>
+				</base:html.menu.Button>
+			</Toolbar>
+			<Columns>
+				<base:html.table.TextColumn>
+					<Title> </Title>
+					<Text>${recapProjet.getHtmlName($row)} </Text>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn IteratorVar="$collab">
+					<IterateOn>${recapProjet.collaborateurs}</IterateOn>
+					<Title>${$collab.nomColl}</Title>
+					<CellValue>${recapProjet.getValue($row, $collab)}</CellValue>
+				</base:html.table.TextColumn>
+				<base:html.table.TextColumn>
+					<Title>${message("total.title")} </Title>
+					<CellValue>${recapProjet.getTotal($row)}</CellValue>
+				</base:html.table.TextColumn>
+			</Columns>
+		</base:html.table.Table>
+	</base:html.layout.Div>
+</base:page.Composite>

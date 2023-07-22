@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<prerequisites>
+		<maven>2.0.7</maven>
+	</prerequisites>
+
+<!-- ============== -->
+	<!-- Identification -->
+	<!-- ============== -->
+	<name>JEITime</name>
+	<artifactId>root-builder</artifactId>
+	<groupId>org.jeinnov.jeitime</groupId>
+	<packaging>pom</packaging>
+	<version>1</version>
+
+	<!-- ========== -->
+	<!-- Properties -->
+	<!-- ========== -->
+	<properties>
+		<topDirectoryLocation>.</topDirectoryLocation>
+	</properties>
+
+	<!-- ======== -->
+	<!-- Profiles -->
+	<!-- ======== -->
+	<!--
+		| Several profiles are defined to build Petals View :
+		|    - a default profile used during Petals View developement,
+		|    - a profile used to build the Petals View release,
+		|    - a profile used in a continous integration context.
+		|
+		| !!! When adding a module, caution to update all impacted profiles. !!!
+	-->
+
+	<!-- Distribution -->
+	<distributionManagement>
+		<repository>
+			<id>ebmws-public-distrib.release</id>
+			<name>ebm public release</name>
+			<url>http://maven.petalslink.com/public</url>
+		</repository>
+		<snapshotRepository>
+			<id>ebmws-public-distrib.snapshot</id>
+			<name>ebm public snapshot</name>
+			<url>http://maven.petalslink.com/public-snapshot</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	<profiles>
+		<!--
+			| The following profile will be used when developping Petals View.
+			| It is activated by default.
+		-->
+		<profile>
+			<id>development</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<java.compiler.showWarnings>
+					true
+				</java.compiler.showWarnings>
+				<java.compiler.debug>true</java.compiler.debug>
+				<java.compiler.optimize>false</java.compiler.optimize>
+			</properties>
+			<modules>
+				<module>jeitime-ws</module>
+				<module>jeitime-ui</module>
+			</modules>
+		</profile>
+		<!--
+			| The following profile will be used when releasing Petals View.
+			| It is activated using the following command-line:
+			|      mvn -Denv=release ...
+		-->
+		<profile>
+			<id>integrationTest-packaging</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<java.compiler.showWarnings>
+					false
+				</java.compiler.showWarnings>
+				<java.compiler.debug>false</java.compiler.debug>
+				<java.compiler.optimize>true</java.compiler.optimize>
+			</properties>
+			<modules>
+				<module>jeitime-ws</module>
+				<module>jeitime-ui</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>release</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>env</name>
+					<value>release</value>
+				</property>
+			</activation>
+			<properties>
+				<java.compiler.showWarnings>
+					false
+				</java.compiler.showWarnings>
+				<java.compiler.debug>false</java.compiler.debug>
+				<java.compiler.optimize>true</java.compiler.optimize>
+			</properties>
+			<modules>
+				<module>jeitime-ws</module>
+				<module>jeitime-ws</module>
+				<module>jeitime-ui</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>integration</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<java.compiler.showWarnings>
+					false
+				</java.compiler.showWarnings>
+				<java.compiler.debug>false</java.compiler.debug>
+				<java.compiler.optimize>true</java.compiler.optimize>
+			</properties>
+			<modules>
+				<module>jeitime-ws</module>
+				<module>jeitime-ui</module>
+				<module>integration-tests</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>integration-cleanup</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<java.compiler.showWarnings>
+					false
+				</java.compiler.showWarnings>
+				<java.compiler.debug>false</java.compiler.debug>
+				<java.compiler.optimize>true</java.compiler.optimize>
+			</properties>
+			<modules>
+				<module>jeitime-ws</module>
+				<module>jeitime-ui</module>
+				<module>integration-tests</module>
+			</modules>
+		</profile>
+	</profiles>
+
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sysdeo-tomcat-maven-plugin</artifactId>
+				<version>1.0</version>
+			</plugin>
+			<!-- use eclipse plugin 2.5.1 version because later version introduce a bug that forbid the use of aspectj in eclipse -->
+			<plugin>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<groupId>org.apache.maven.plugins</groupId>
+					<version>2.5.1</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>

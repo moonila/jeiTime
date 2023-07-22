@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<base:page.Composite Name="Accueil"-->
+<!--	xmlns:base="org.ow2.opensuit.xml.base" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--	xsi:schemaLocation="org.ow2.opensuit.xml.base ../../WEB-INF/base.xsd ">-->
+
+	<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../base.xsd">
+		<Context>
+			<base:page.ctx.Definition />
+		</Context>
+		<Title>${message("accueil_appli.title")}  </Title>
+		<base:html.HTML>
+			<Code><![CDATA[
+			<div class=text>Accueil de l'application JEI Innov</div>
+			]]></Code>
+		</base:html.HTML>
+
+
+	</base:page.Composite>

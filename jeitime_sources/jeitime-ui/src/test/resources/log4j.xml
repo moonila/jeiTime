@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration>
+	<!-- console appender - verbose ON -->
+	<appender name="stdoutVerbose" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n" />
+		</layout>
+	</appender>
+	<!-- console appender - verbose OFF -->
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%5p ] %m%n" />
+		</layout>
+	</appender>
+  
+	<logger name="org.hibernate" additivity="false">
+		<level value="error" />
+		<appender-ref ref="stdoutVerbose" />
+	</logger>
+
+	<logger name="com.mchange.v2.resourcepool" additivity="false">
+		<level value="error" />
+		 <appender-ref ref="stdoutVerbose" />
+	</logger>
+	  <!-- simple console logger for Open Suit -->
+    <logger name="org.ow2.opensuit" additivity="false">
+        <level value="error" />
+        <appender-ref ref="stdoutVerbose" />
+    </logger>
+	<root>
+		<priority value="info" />
+		<appender-ref ref="stdoutVerbose" />
+	</root>
+
+</log4j:configuration>

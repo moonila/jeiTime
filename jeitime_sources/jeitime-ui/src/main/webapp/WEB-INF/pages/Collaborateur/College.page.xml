@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") }</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${collegeBean.loadAll()}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("orga_temps_travail.title")}</Title>
+
+	<base:html.form.ViewForm ID="college">
+		<Items>
+			<base:html.form.Section>
+				<Title>${message("liste_college.title")}</Title>
+				<base:html.form.field.TableField
+					Name="tableauCollege">
+					<base:html.table.Table ID="tableCollege">
+						<RowsData> ${collegeBean.allCollege} </RowsData>
+						<Columns>
+							<base:html.table.TextColumn>
+								<Title> ${message("nom_college.title")} </Title>
+								<Text> ${$row.nomCollege}</Text>
+								<OnClick>
+									<base:action.DoAndForward>
+										<AddParameters>
+											<base:param.DynParam Name="ID">
+												<Value>${$row.idCollege}</Value>
+											</base:param.DynParam>
+										</AddParameters>
+										<Do>${collegeBean.select(request)}</Do>
+										<Forwards>
+											<base:action.Case Name="DEFAULT">
+												<base:action.ReloadThisPage></base:action.ReloadThisPage>
+											</base:action.Case>
+										</Forwards>
+									</base:action.DoAndForward>
+								</OnClick>
+							</base:html.table.TextColumn>
+							<base:html.table.TextColumn>
+								<Title>${message("Suppr.title")}</Title>
+								<Text>supprimer</Text>
+								<OnClick>
+									<base:action.Ask Buttons="YesNo">
+										<AddParameters>
+											<base:param.DynParam Name="ID">
+												<Value>	${$row.idCollege}</Value>
+											</base:param.DynParam>
+										</AddParameters>
+										<Title>${message("conf.title")}</Title>
+										<Message>${message("confirm_suppr_college.message")}</Message>
+										<OnYes>
+											<base:action.DoAndForward>
+												<Do>${collegeBean.delete(request)}</Do>
+												<Forwards>
+													<base:action.Case Name="default">
+														<base:action.ReloadThisPage></base:action.ReloadThisPage>
+													</base:action.Case>
+												</Forwards>
+											</base:action.DoAndForward>
+										</OnYes>
+										<OnNo>
+											<base:action.ReloadThisPage></base:action.ReloadThisPage>
+										</OnNo>
+									</base:action.Ask>
+								</OnClick>
+							</base:html.table.TextColumn>
+						</Columns>
+					</base:html.table.Table>
+				</base:html.form.field.TableField>
+			</base:html.form.Section>
+		</Items>
+	</base:html.form.ViewForm>
+	<base:html.layout.Div>
+		<Visible>${not collegeBean.visible}</Visible>
+		<base:html.form.EditForm ID="createCollege">
+			<Items>
+				<base:html.form.Section>
+					<Title>${message("cree_new_college.title")} </Title>
+					<base:html.form.field.TextField
+						Cols="30">
+						<Label>${message("nom2.label")}</Label>
+						<Bind>${collegeBean.nomCollegeUI}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("lundi.label")}</Label>
+						<Bind>${collegeBean.nbHeureLun}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("mardi.label")}</Label>
+						<Bind>${collegeBean.nbHeureMar}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("mercredi.label")}</Label>
+						<Bind>${collegeBean.nbHeureMerc}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("jeudi.label")}</Label>
+						<Bind>${collegeBean.nbHeureJeu}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label>${message("vendredi.label")}</Label>
+						<Bind>${collegeBean.nbHeureVend}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label> ${message("nb_heures_mensuel.label")}  </Label>
+						<Bind>${collegeBean.nbHeureMensCollegeUI}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label> ${message("nb_heures_annuel.label")} </Label>
+						<Bind>${collegeBean.nbHeureAnnCollegeUI}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.IntegerField>
+						<Label>${message("nb_jours_conges.label")} : </Label>
+						<Bind>${collegeBean.nbJourCongeAnnCollegeUI}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.IntegerField>
+
+					<base:html.form.field.IntegerField>
+						<Label>${message("nb_rtt.label")}</Label>
+						<Bind>${collegeBean.nbJourRttAnnCollegeUI}</Bind>
+
+					</base:html.form.field.IntegerField>
+					<base:html.form.field.TextField>
+						<Label>${message("def_liste_saisie.label")}</Label>
+						<Bind>${collegeBean.listSaisie}</Bind>
+					</base:html.form.field.TextField>
+				</base:html.form.Section>
+			</Items>
+			<SubmitButtonLabel>
+			${message("creer.bouton")}
+			</SubmitButtonLabel>
+			<OnSubmit>
+				<base:action.DoAndForward>
+					<Do>${collegeBean.create()}</Do>
+					<Forwards>
+						<base:action.Case Name="success">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnSubmit>
+		</base:html.form.EditForm>
+	</base:html.layout.Div>
+
+	<base:html.layout.Div>
+		<Visible>${collegeBean.visible}</Visible>
+		<base:html.form.EditForm ID="updateCollege">
+			<Items>
+				<base:html.form.Section>
+					<Title>${message("modifier_college.title")} </Title>
+					<base:html.form.field.TextField
+						Cols="30">
+						<Label>${message("nom2.label")}</Label>
+						<Bind>${collegeBean.nomCollegeUI}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label> ${message("lundi.label")} </Label>
+						<Bind>${collegeBean.nbHeureLun}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label> ${message("mardi.label")} </Label>
+						<Bind>${collegeBean.nbHeureMar}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label> ${message("mercredi.label")} </Label>
+						<Bind>${collegeBean.nbHeureMerc}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label> ${message("jeudi.label")} </Label>
+						<Bind>${collegeBean.nbHeureJeu}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label> ${message("vendredi.label")} </Label>
+						<Bind>${collegeBean.nbHeureVend}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label> ${message("nb_heures_mensuel.label")}  </Label>
+						<Bind>${collegeBean.nbHeureMensCollegeUI}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.TextField>
+						<Label> ${message("nb_heures_annuel.label")} </Label>
+						<Bind>${collegeBean.nbHeureAnnCollegeUI}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.TextField>
+					<base:html.form.field.IntegerField>
+						<Label>${message("nb_jours_conges.label")}</Label>
+						<Bind>${collegeBean.nbJourCongeAnnCollegeUI}</Bind>
+						<Validators>
+							<base:validation.Mandatory />
+						</Validators>
+					</base:html.form.field.IntegerField>
+					<base:html.form.field.IntegerField>
+						<Label>${message("nb_rtt.label")}</Label>
+						<Bind>${collegeBean.nbJourRttAnnCollegeUI}</Bind>
+					</base:html.form.field.IntegerField>
+					<base:html.form.field.TextField>
+						<Label>${message("def_liste_saisie.label")}</Label>
+						<Bind>${collegeBean.listSaisie}</Bind>
+					</base:html.form.field.TextField>
+				</base:html.form.Section>
+			</Items>
+			<SubmitButtonLabel>
+			${message("modifier.bouton")}
+			</SubmitButtonLabel>
+			<OnSubmit>
+				<base:action.DoAndForward>
+					<Do>${collegeBean.update()} </Do>
+					<Forwards>
+						<base:action.Case Name="success">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnSubmit>
+			<OnCancel>
+				<base:action.DoAndForward>
+					<Do>${collegeBean.refresh()}</Do>
+					<Forwards>
+						<base:action.Case Name="success">
+							<base:action.ReloadThisPage></base:action.ReloadThisPage>
+						</base:action.Case>
+					</Forwards>
+				</base:action.DoAndForward>
+			</OnCancel>
+		</base:html.form.EditForm>
+	</base:html.layout.Div>
+</base:page.Composite>

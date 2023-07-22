@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur")}</Authorization>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("nettoyage_saisies_errone.title")}</Title>
+	<base:html.HTML>
+		<Code><![CDATA[
+ 			<div class=legend3><br/><br/><h1> </h1></div>
+ 			<div class=legend2><h5><font color = red>		
+ 			Ce nettoyage permet de s'assurer que la base de donnée ne contient pas de données pouvant causer des erreurs dans l'application
+ 			</font></h5></div>]]></Code>
+	</base:html.HTML>
+	<base:html.form.EditForm ID="create">
+		<Items>
+			<base:html.form.field.MessageField>
+				<Label>		</Label>
+				<Value>		</Value>
+			</base:html.form.field.MessageField>
+		</Items>
+		<SubmitButtonLabel>
+			${message("nettoyer.bouton")}
+			</SubmitButtonLabel>
+		<OnSubmit>
+			<base:action.DoAndForward>
+				<Do>${nettoyage.getNettoyage()} </Do>
+				<Forwards>
+					<base:action.Case Name="success">
+						<base:action.Inform>
+							<Title>${message("suppression_reussi.title")} </Title>
+							<Message>${message("suppression_effectuee.message")} </Message>
+							<OnOk>
+								<base:action.ReloadThisPage></base:action.ReloadThisPage>
+							</OnOk>
+						</base:action.Inform>
+					</base:action.Case>
+				</Forwards>
+			</base:action.DoAndForward>
+		</OnSubmit>
+	</base:html.form.EditForm>
+</base:page.Composite>

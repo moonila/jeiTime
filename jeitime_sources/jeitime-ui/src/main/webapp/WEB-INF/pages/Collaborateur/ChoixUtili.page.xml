@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base:page.Composite xmlns:base="xmlmap://org.ow2.opensuit.xml.base/v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="xmlmap://org.ow2.opensuit.xml.base/v1.0 ../../base.xsd">
+	<Context>
+		<base:page.ctx.Definition>
+			<Authorization>${request.isUserInRole("administrateur") || request.isUserInRole("chef_de_projet") || request.isUserInRole("gestionnaire")}</Authorization>
+			<OnLoad>
+				<base:binding.Do>
+					${collaborateurBean.loadAll()}
+				</base:binding.Do>
+			</OnLoad>
+		</base:page.ctx.Definition>
+	</Context>
+	<Title>${message("list_util.title")}</Title>
+	<base:html.table.Table ID="tableCollab"
+		SortAndPaginateLocaly="true">
+		<ResultsPerPage>${20}</ResultsPerPage>
+		<RowsData> ${collaborateurBean.allCollaborateur} </RowsData>
+		<Columns>
+			<base:html.table.TextColumn>
+				<Title> ${message("nom_util.title")} </Title>
+				<Sort>
+					<base:html.table.NativeSorter />
+				</Sort>
+				<CellValue>${$row.nomColl}</CellValue>
+				<Text>${$row.prenomColl} ${$row.nomColl} </Text>
+				<OnClick>
+					<base:action.ShowPage Page="/pages/Collaborateur/ConsultUtilisateur">
+						<Parameters>
+							<base:param.DynParam Name="id">
+								<Value>${$row.idColl}</Value>
+							</base:param.DynParam>
+						</Parameters>
+					</base:action.ShowPage>
+				</OnClick>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("login.title")}</Title>
+				<Text>${$row.login}</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("statut.title")}</Title>
+				<Sort>
+					<base:html.table.NativeSorter />
+				</Sort>
+				<Text>${message(stringFormat("collaborateur.status.%s", $row.statut))}</Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title> ${message("type_contrat.title")} </Title>
+				<Text>${message(stringFormat("collaborateur.contrat.%s", $row.contrat))} </Text>
+			</base:html.table.TextColumn>
+			<base:html.table.TextColumn>
+				<Title>${message("Suppr.title")}</Title>
+				<Text>supprimer</Text>
+				<OnClick>
+					<base:action.SwitchAction>
+						<Switch>${collaborateurBean.isInLienTach($row.idColl, $row.login)}</Switch>
+						<Cases>
+							<base:action.Case Name="false">
+								<base:action.Ask Buttons="YesNo">
+									<AddParameters>
+										<base:param.DynParam Name="ID">
+											<Value>	${$row.idColl}</Value>
+										</base:param.DynParam>
+									</AddParameters>
+									<Title>${message("conf.title")}</Title>
+									<Message>${message("confirm_suppr.message")}</Message>
+									<OnYes>
+										<base:action.DoAndForward>
+											<Do>${collaborateurBean.delete(request)} </Do>
+											<Forwards>
+												<base:action.Case Name="default">
+													<base:action.ReloadThisPage></base:action.ReloadThisPage>
+												</base:action.Case>
+											</Forwards>
+										</base:action.DoAndForward>
+									</OnYes>
+									<OnNo>
+										<base:action.ReloadThisPage></base:action.ReloadThisPage>
+									</OnNo>
+								</base:action.Ask>
+							</base:action.Case>
+<!--							<base:action.Case Name="true">-->
+<!--								<base:action.ReloadThisPage/>-->
+<!--							</base:action.Case>-->
+
+						</Cases>
+					</base:action.SwitchAction>
+				</OnClick>
+			</base:html.table.TextColumn>
+		</Columns>
+	</base:html.table.Table>
+</base:page.Composite> 
